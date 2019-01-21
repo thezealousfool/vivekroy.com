@@ -35,14 +35,9 @@
         nav {
             margin: 2em auto;
 
-            >* {
-                border-bottom: 1px solid;
-
-                &:after {
-                    content: '';
-                    margin-top: 0.6em;
-                    display: block;
-                }
+            a {
+                padding: 1em;
+                text-decoration: underline;
             }
         }
     }
