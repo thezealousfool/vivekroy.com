@@ -2,23 +2,39 @@
   "name": "vivekroy.com",
   "version": "2.0.0",
   "description": "Portfolio website for Vivek Roy",
-  "main": "index.js",
+  "main": "gulpfile.js",
   "scripts": {
-    "build": "rollup -c",
+    "start": "gulp",
+    "css": "gulp css",
+    "js": "gulp js",
+    "imgs": "gulp imgs",
+    "html": "gulp html",
+    "clean": "gulp clean-all",
+    "dev": "gulp dev",
+    "build": "gulp --production",
     "serve": "live-server --no-browser dist"
   },
   "author": "Vivek Roy",
   "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-cli": "^2.0.1",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-nunjucks-render": "^2.2.2",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.1",
+    "gulp-util": "^3.0.8",
+    "gulp-watch": "^5.0.1",
+    "live-server": "^1.2.1",
+    "node-sass": "^4.11.0"
+  },
   "dependencies": {
     "wicked-elements": "^0.4.3"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "live-server": "^1.2.1",
-    "rollup": "^0.68.2",
-    "rollup-plugin-babel": "^4.1.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
-    "rollup-plugin-uglify": "^6.0.0"
   }
 }

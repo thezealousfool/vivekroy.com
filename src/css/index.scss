@@ -1,0 +1,47 @@
+@import 'normalize';
+@import 'fonts';
+
+#home {
+    // background-color: #22D0D0;
+
+    main {
+        padding: 7vw;
+        text-align: center;
+
+        img {
+            width: 500px;
+            max-width: 60%;
+            margin-left: 5%;
+            margin-top: 5vh;
+            display: inline-block;
+            border-radius: 40%;
+        }
+        h1 {
+            text-transform: uppercase;
+            font-size: 3em;
+            margin-bottom: 0;
+        }
+        h3 {
+            margin-top: 0;
+            font-size: 1em;
+            font-weight: 400;
+        }
+        nav {
+            margin: 2em auto;
+
+            >* {
+                border-bottom: 1px solid;
+
+                &:after {
+                    content: '';
+                    margin-top: 0.6em;
+                    display: block;
+                }
+            }
+        }
+    }
+    footer {
+        text-align: center;
+        font-size: 0.8em;
+    }
+}
