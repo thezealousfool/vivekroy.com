@@ -17,9 +17,13 @@
             border-radius: 40%;
         }
         h1 {
-            text-transform: uppercase;
             font-size: 3em;
+            font-weight: 400;
             margin-bottom: 0;
+            span {
+                font-family: inherit;
+                font-weight: 700;
+            }
         }
         h3 {
             margin-top: 0;

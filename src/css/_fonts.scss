@@ -1,5 +1,5 @@
 * {
-    font-family: BlinkMacSystemFont,-apple-system,"Segoe UI","Fira Sans",Roboto,Ubuntu,Oxygen-Sans,Cantarell,"Helvetica Neue",Arial,sans-serif;
+    font-family: Roboto,BlinkMacSystemFont,-apple-system,"Segoe UI","Fira Sans",Ubuntu,Oxygen-Sans,Cantarell,"Helvetica Neue",Arial,sans-serif;
     font-weight: 300;
 }
 
@@ -7,7 +7,7 @@ h1,h2,h3,h4 {
     font-weight: 900;
 }
 
-#content {
+body {
     font-size: 1.2em;
 
     @media screen and (max-width: 500px) {
