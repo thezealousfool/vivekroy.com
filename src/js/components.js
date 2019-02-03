@@ -1,7 +1,4 @@
 wickedElements.define('.nav-link', {
-    init: function (event) {
-        this.el = event.currentTarget;
-    },
     onclick: function (event) {
         if (!(this.el.hasAttribute('forward')
             || !this.el.hasAttribute('href')
@@ -21,9 +18,6 @@ wickedElements.define('.nav-link', {
 });
 
 wickedElements.define('.route-dispatcher', {
-    init: function (event) {
-        this.el = event.currentTarget;
-    },
     onroute: function (event) {
         var elem = this.el.querySelector(event.detail.to);
         if (elem) {
@@ -41,10 +35,7 @@ wickedElements.define('.route-dispatcher', {
 });
 
 wickedElements.define('.route-handler', {
-    init: function (event) {
-        this.el = event.currentTarget;
-    },
     onhandleRoute: function (event) {
-        console.log('Routing to', event.detail.href, ', getting', event.detail.get);
+        xhr()
     }
 });

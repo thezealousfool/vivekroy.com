@@ -1,14 +1,16 @@
 * {
-    font-family: Roboto,BlinkMacSystemFont,-apple-system,"Segoe UI","Fira Sans",Ubuntu,Oxygen-Sans,Cantarell,"Helvetica Neue",Arial,sans-serif;
+    font-family: inherit;
     font-weight: 400;
     color: #222;
 }
 
 h1,h2,h3,h4 {
     font-weight: 900;
+    letter-spacing: -0.02em;
 }
 
 body {
+    font-family: Roboto,BlinkMacSystemFont,-apple-system,"Segoe UI","Fira Sans",Ubuntu,Oxygen-Sans,Cantarell,"Helvetica Neue",Arial,sans-serif;
     font-size: 1.2em;
 
     @media screen and (max-width: 500px) {

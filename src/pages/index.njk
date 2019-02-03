@@ -9,24 +9,25 @@
 {% endblock %}
 
 {% block content %}
-<body id="home" class="route-dispatcher">
-    <main class="route-handler">
-        <picture>
-            <source srcset="/img/self_350.webp 350w,/img/self_525.webp 525w,/img/self_700.webp 700w,/img/self_910.webp 910w,/img/self_1000.webp 1000w" sizes="(max-width:500px) 80%, 350px" type="image/webp">
-            <source srcset="/img/self_350.jpg 350w,/img/self_525.jpg 525w,/img/self_700.jpg 700w,/img/self_910.jpg 910w,/img/self_1000.jpg 1000w" sizes="(max-width:500px) 80%, 350px" type="image/jpeg">
-            <img src="/img/self_500.jpg" alt="Image of Vivek Roy">
-        </picture>
-        <h1 class="title">Vivek <span>Roy</span></h1>
-        <h3 class="subtitle">Machine Learning Practitioner<br>Designer | Developer | Thinker</h3>
-        <nav>
-            <a class="nav-link" href="/blog" to="main">Blog</a>
-            <a class="nav-link" href="/about" to="main">About</a>
-            <a class="nav-link" href="/contact" to="main">Contact</a>
-            <a class="nav-link" forward href="/CV.pdf" target="_blank" rel="noopener">CV</a>
-        </nav>
+<body class="route-dispatcher">
+    <main id="home" class="route-handler">
+        <div class="top">
+            <div class="back"></div>
+            <h1><span>Vivek</span><br><span>Roy</span></h1>
+        </div>
+        <div class="bottom">
+            <nav>
+                <ul>
+                    <li><a class="nav-link" href="/blog" to="main">Blog</a></li>
+                    <li><a class="nav-link" href="/about" to="main">About</a></li>
+                    <li><a class="nav-link" href="/contact" to="main">Contact</a></li>
+                    <li><a class="nav-link" forward href="/CV.pdf" target="_blank" rel="noopener">CV</a></li>
+                </ul>
+            </nav>
+        </div>
+        <footer>
+            <p>Copyright. Vivek Roy. <br> 2018-19. All rights reserved.</p>
+        </footer>
     </main>
-    <footer>
-        <p>Copyright. Vivek Roy. 2019-20.</p>
-    </footer>
 </body>
 {% endblock %}
