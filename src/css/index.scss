@@ -59,8 +59,8 @@ body {
         height: calc(49.08vh + 9.54vw);
         transform-origin: bottom center;
         transform: rotate(-11deg);
-        box-shadow: 0 0 20vh 1vh rgb(127,79,227);
-        background: linear-gradient(169.47deg, #7F4FE3 6.17%, #471BA7 93.51%);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+        background: linear-gradient(169.47deg, #62A8FD, #9E80F3 82.13%);
     }
     .bottom {
         padding-right: 14vw;
@@ -84,8 +84,8 @@ body {
     }
     footer {
         position: absolute;
-        left: 4rem;
-        bottom: 2rem;
+        left: 3.7rem;
+        bottom: 1rem;
         transform-origin: bottom left;
         transform: rotate(-90deg);
         font-size: 0.8em;
@@ -116,8 +116,8 @@ body {
             top: calc(.92vh - 9.54vw);
             height: calc(98.16vh + 19.08vw);
             width: calc(49.08vw + 9.54vh);
-            background: linear-gradient(79.88deg, #7F4FE3 8.88%, #471BA7 82.13%);
-            box-shadow: 0 0 20vw 1vw rgb(127,79,227);
+            background: linear-gradient(79.88deg, #62A8FD, #9E80F3 82.13%);
+            box-shadow: 3px 0 10px rgba(0,0,0,0.25);
         }
         .bottom {
             padding-right: 0;
@@ -143,9 +143,6 @@ body {
     @media screen and (min-width: 1000px) {
         nav {
             font-size: 72px;
-        }
-        .back {
-            box-shadow: 0 0 12vw 0.75vw rgb(127,79,227);
         }
         footer {
             font-size: 1em;
