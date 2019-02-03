@@ -85,7 +85,7 @@ body {
     footer {
         position: absolute;
         left: 4rem;
-        bottom: 2.5rem;
+        bottom: 2rem;
         transform-origin: bottom left;
         transform: rotate(-90deg);
         font-size: 0.8em;
@@ -137,7 +137,7 @@ body {
     }
     @media screen and (min-width: 500px) {
         nav {
-            font-size: 8vw;
+            font-size: 7vw;
         }
     }
     @media screen and (min-width: 1000px) {
