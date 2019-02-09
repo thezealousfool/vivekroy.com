@@ -10,7 +10,7 @@
 
 {% block content %}
 <body class="route-dispatcher">
-    <main id="home" class="route-handler">
+    <main id="home" class="route-handler" role="main">
         <div class="top">
             <div class="back"></div>
             <h1><span>Vivek</span><br><span>Roy</span></h1>
@@ -18,9 +18,9 @@
         <div class="bottom">
             <nav>
                 <ul>
-                    <li><a class="nav-link" href="/blog" to="main">Blog</a></li>
-                    <li><a class="nav-link" href="/about" to="main">About</a></li>
-                    <li><a class="nav-link" href="/contact" to="main">Contact</a></li>
+                    <li><a class="nav-link" href="/blog.html" get="main" to="main">Blog</a></li>
+                    <li><a class="nav-link" href="/about.html" get="main" to="main">About</a></li>
+                    <li><a class="nav-link" href="/contact.html" get="main" to="main">Contact</a></li>
                     <li><a class="nav-link" forward href="/CV.pdf" target="_blank" rel="noopener">CV</a></li>
                 </ul>
             </nav>

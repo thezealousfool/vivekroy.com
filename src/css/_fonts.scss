@@ -1,7 +1,7 @@
 * {
     font-family: inherit;
-    font-weight: 400;
-    color: #222;
+    font-weight: inherit;
+    color: inherit;
 }
 
 h1,h2,h3,h4 {
@@ -12,6 +12,8 @@ h1,h2,h3,h4 {
 body {
     font-family: Roboto,BlinkMacSystemFont,-apple-system,"Segoe UI","Fira Sans",Ubuntu,Oxygen-Sans,Cantarell,"Helvetica Neue",Arial,sans-serif;
     font-size: 1.2em;
+    font-weight: 400;
+    color: #222;
 
     @media screen and (max-width: 500px) {
         h1 {
