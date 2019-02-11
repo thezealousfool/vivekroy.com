@@ -241,3 +241,39 @@ main {
         }
     }
 }
+
+section, article {
+    margin: 1em 0 1em 0;
+}
+
+h1 {
+    margin: 1em 0 0.5em 0;
+}
+
+#about {
+    em {
+        display: flex;
+    }
+    .period {
+        font-size: 0.8em;
+        text-align: right;
+        display: inline-block;
+    }
+}
+
+#contact {
+    ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    a {
+        display: inline-flex;
+        align-items: center;
+    }
+    svg {
+        width: 5rem;
+        margin-right: 0.5rem;
+    }
+}

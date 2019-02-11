@@ -70,7 +70,12 @@ wickedElements.define('.route-handler', {
             }
             this.el.dispatchEvent(new CustomEvent('routeChanged', {
                 bubbles: false,
-                detail,
+                detail: {
+                    href: detail.href,
+                    to: detail.to,
+                    get: detail.get,
+                    doc: newDoc,
+                },
             }));
         }).bind(this);
         xhr.responseType = 'document';

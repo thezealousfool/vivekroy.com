@@ -4,9 +4,8 @@
     color: inherit;
 }
 
-h1,h2,h3,h4 {
+h1,h2,h3,h4,strong {
     font-weight: 900;
-    letter-spacing: -0.02em;
 }
 
 body {
@@ -14,6 +13,15 @@ body {
     font-size: 1.2em;
     font-weight: 400;
     color: #222;
+
+    h1 {
+        font-size: 2em;
+        letter-spacing: -0.02em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
 
     @media screen and (max-width: 500px) {
         h1 {
