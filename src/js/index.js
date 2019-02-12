@@ -3,8 +3,7 @@ window.addEventListener('load', function (event) {
     switch (window.location.pathname) {
         case '/':
         case '/about':
-        case '/contact':
-        case '/blog': caches = ['/', '/about', '/contact', '/blog']; break;
+        case '/contact': caches = ['/', '/about', '/contact']; break;
         default: caches = [];
     };
     document.querySelector('.route-dispatcher').dispatchEvent(new CustomEvent('cacheRoute', {
