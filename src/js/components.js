@@ -3,7 +3,6 @@ wickedElements.define('.nav-link', {
         if (!(this.el.hasAttribute('forward')
             || !this.el.hasAttribute('href')
             || !this.el.hasAttribute('to'))) {
-            console.log('Link clicked');
             event.preventDefault();
             var newEvent = new CustomEvent('route', {
                 bubbles: true,
@@ -96,10 +95,8 @@ wickedElements.define('.route-dispatcher', {
 
 wickedElements.define('.route-handler', {
     onhandleRoute: function (event) {
-        console.log('Handling Route');
         var newNode = event.detail.doc.querySelector(event.detail.get);
         var oldNode = document.querySelector(event.detail.get);
-        console.log(oldNode, newNode, event.detail.doc.querySelector('body'));
         if (!oldNode || !newNode) return;
         oldNode.parentNode.replaceChild(newNode.cloneNode(true), oldNode);
     },
