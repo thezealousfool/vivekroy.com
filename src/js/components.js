@@ -50,12 +50,21 @@ wickedElements.define('.route-dispatcher', {
             }
         }
     },
-    xhr: function (elem, detail, push) {
-        console.log('xhr', detail.href);
+    oncacheRoute: function (event) {
+        event.detail.href.forEach(href => this.xhr(null, { href }, false, true));
+    },
+    xhr: function (elem, detail, push, cache) {
+        cache = cache | false;
+        if (detail.href in this.views) {
+            if (!cache)
+                this.dispatchEvent(elem, event.detail, push);
+            return;
+        }
         var xhr = new XMLHttpRequest();
         xhr.onload = (function (event) {
             this.views[detail.href] = event.target.response;
-            this.dispatchEvent(elem, detail, push);
+            if (!cache)
+                this.dispatchEvent(elem, detail, push);
         }).bind(this);
         xhr.responseType = 'document';
         xhr.open('GET', detail.href);
