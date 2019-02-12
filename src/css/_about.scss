@@ -8,3 +8,65 @@
         display: inline-block;
     }
 }
+
+#about.animin {
+    .top {
+        animation-name: slideDownExpo;
+        h1 {
+            animation-name: slideDownExpo;
+            animation-delay: 0.5s;
+        }
+    }
+    h1, article {
+        animation-name: slideInRight;
+        animation-duration: 0.5s;
+        @for $i from 0 through 8 {
+            &:nth-child(#{($i + 1)}) {
+                animation-delay: #{(1 + $i * 0.15)}s;
+            }
+        }
+    }
+    footer {
+        animation-name: fadeIn;
+        animation-delay: 1.5s;
+    }
+    @media screen and (min-width: 500px) and (max-height: 500px),
+           screen and (min-width: 900px) {
+        .top {
+            animation-name: slideRightExpo;
+            h1 {
+                animation-name: slideRightExpo;
+            }
+        }
+    }
+}
+
+#about.animout {
+    * {
+        animation-fill-mode: forwards;
+    }
+    .top {
+        animation-name: slideUpExpo;
+        h1 {
+            animation-name: slideUpExpo;
+        }
+    }
+    h1, article {
+        animation-name: slideOutRight;
+        @for $i from 0 through 4 {
+            &:nth-child(#{($i + 1)}) {
+                animation-delay: #{($i * 0.1)}s
+            }
+        }
+    }
+    footer {
+        animation-name: fadeOut;
+        animation-duration: 0.5s;
+    }
+    @media screen and (min-width: 500px) and (max-height: 500px),
+           screen and (min-width: 900px) {
+        .top {
+            animation-name: slideLeftExpo;
+        }
+    }
+}

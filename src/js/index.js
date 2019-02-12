@@ -15,9 +15,32 @@ window.addEventListener('load', function (event) {
     }));
 });
 
-function animate(selector, className) {
+function animate(selector, className, duration) {
     var elem = document.querySelector(selector);
     if (elem) {
         elem.classList.add(className);
+        window.setTimeout(function () {
+            elem.classList.remove(className);
+        }, 2600);
     }
 }
+
+wickedElements.define('main', {
+    onbeforeHandleRoute: function (event) {
+        this.el.classList.add('animout');
+        this.event = event;
+        window.setTimeout((function () {
+            this.el.classList.remove('animout');
+            this.el.dispatchEvent(new CustomEvent('handleRoute', {
+                bubbles: false,
+                detail: this.event.detail,
+            }));
+        }).bind(this), 1100);
+    },
+    onconnected: function (event) {
+        this.el.classList.add('animin');
+        window.setTimeout((function () {
+            this.el.classList.remove('animin');
+        }).bind(this), 2600);
+    },
+});

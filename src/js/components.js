@@ -80,7 +80,7 @@ wickedElements.define('.route-dispatcher', {
                 get: detail.get,
             }, null, detail.href);
         }
-        var newEvent = new CustomEvent('handleRoute', {
+        elem.dispatchEvent(new CustomEvent('beforeHandleRoute', {
             bubbles: false,
             detail: {
                 href: detail.href,
@@ -88,8 +88,7 @@ wickedElements.define('.route-dispatcher', {
                 get: detail.get,
                 doc: this.views[detail.href],
             }
-        });
-        elem.dispatchEvent(newEvent);
+        }));
     },
 });
 
@@ -98,6 +97,7 @@ wickedElements.define('.route-handler', {
         var newNode = event.detail.doc.querySelector(event.detail.get);
         var oldNode = document.querySelector(event.detail.get);
         if (!oldNode || !newNode) return;
-        oldNode.parentNode.replaceChild(newNode.cloneNode(true), oldNode);
+        var newNodeClone = newNode.cloneNode(true)
+        oldNode.parentNode.replaceChild(newNodeClone, oldNode);
     },
 });
