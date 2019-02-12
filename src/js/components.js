@@ -3,6 +3,7 @@ wickedElements.define('.nav-link', {
         if (!(this.el.hasAttribute('forward')
             || !this.el.hasAttribute('href')
             || !this.el.hasAttribute('to'))) {
+            console.log('Link clicked');
             event.preventDefault();
             var newEvent = new CustomEvent('route', {
                 bubbles: true,
@@ -18,68 +19,79 @@ wickedElements.define('.nav-link', {
 });
 
 wickedElements.define('.route-dispatcher', {
-    onroute: function (event) {
-        var elem = this.el.querySelector(event.detail.to);
-        if (elem) {
-            event.preventDefault();
-            var newEvent = new CustomEvent('handleRoute', {
-                bubbles: false,
-                detail: event.detail,
-            });
-            elem.dispatchEvent(newEvent);
-        }
-    }
-});
-
-wickedElements.define('.route-handler', {
-    onconnected: function(event) {
+    init: function (event) {
+        this.el = event.currentTarget;
+        this.views = {};
+        this.views[window.location.pathname] = document.cloneNode(true);
+    },
+    onconnected: function (event) {
         window.onpopstate = (function (event) {
-            this.onhandleRoute({
+            var newEvent = new CustomEvent('route', {
+                bubbles: false,
                 detail: {
                     href: event.target.location.pathname,
                     to: event.state.to,
                     get: event.state.get,
-                },
-                push: false,
-            }, false);
+                    push: false,
+                }
+            });
+            this.el.dispatchEvent(newEvent);
         }).bind(this);
     },
-    onhandleRoute: function (event) {
-        if (event.push)
-            this.loadView(event.detail, event.push);
-        else
-            this.loadView(event.detail, true);
-    },
-    loadView: function(detail, push) {
-        var xhr = new XMLHttpRequest();
-        xhr.onload = (function(event) {
-            var newDoc = event.target.response;
-            var newNode = newDoc.querySelector(detail.get);
-            var oldNode = document.querySelector(detail.get);
-            if (!oldNode || !newNode) return;
-            oldNode.parentNode.replaceChild(newNode, oldNode);
-            if (push) {
-                history.replaceState({
-                    to: detail.to,
-                    get: detail.get,
-                }, null, window.location.pathname);
-                history.pushState({
-                    to: detail.to,
-                    get: detail.get,
-                }, null, detail.href);
+    onroute: function (event) {
+        var elem = this.el.querySelector(event.detail.to);
+        if (elem) {
+            event.preventDefault();
+            var push = event.detail.push !== undefined ? event.detail.push : true;
+            if (event.detail.href in this.views) {
+                this.dispatchEvent(elem, event.detail, push);
+            } else {
+                this.xhr(elem, event.detail, push);
             }
-            this.el.dispatchEvent(new CustomEvent('routeChanged', {
-                bubbles: false,
-                detail: {
-                    href: detail.href,
-                    to: detail.to,
-                    get: detail.get,
-                    doc: newDoc,
-                },
-            }));
+        }
+    },
+    xhr: function (elem, detail, push) {
+        console.log('xhr', detail.href);
+        var xhr = new XMLHttpRequest();
+        xhr.onload = (function (event) {
+            this.views[detail.href] = event.target.response;
+            this.dispatchEvent(elem, detail, push);
         }).bind(this);
         xhr.responseType = 'document';
         xhr.open('GET', detail.href);
         xhr.send();
+    },
+    dispatchEvent: function (elem, detail, push) {
+        if (push) {
+            window.history.replaceState({
+                to: detail.to,
+                get: detail.get,
+            }, null, window.location.pathname);
+            window.history.pushState({
+                to: detail.to,
+                get: detail.get,
+            }, null, detail.href);
+        }
+        var newEvent = new CustomEvent('handleRoute', {
+            bubbles: false,
+            detail: {
+                href: detail.href,
+                to: detail.to,
+                get: detail.get,
+                doc: this.views[detail.href],
+            }
+        });
+        elem.dispatchEvent(newEvent);
+    },
+});
+
+wickedElements.define('.route-handler', {
+    onhandleRoute: function (event) {
+        console.log('Handling Route');
+        var newNode = event.detail.doc.querySelector(event.detail.get);
+        var oldNode = document.querySelector(event.detail.get);
+        console.log(oldNode, newNode, event.detail.doc.querySelector('body'));
+        if (!oldNode || !newNode) return;
+        oldNode.parentNode.replaceChild(newNode.cloneNode(true), oldNode);
     },
 });
