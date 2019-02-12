@@ -116,6 +116,12 @@
         animation-name: fadeIn;
         animation-delay: 1.5s;
     }
+    @media screen and (min-width: 500px) and (max-height: 500px),
+           screen and (min-width: 900px) {
+        .top {
+            animation-name: slideRightExpo;
+        }
+    }
 }
 
 @keyframes slideDownExpo {
@@ -128,6 +134,23 @@
     from {
         opacity: 0;
         transform: translateY(-100%);
+    }
+
+    60% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideRightExpo {
+    from,
+    60%,
+    to {
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
     }
 
     60% {
