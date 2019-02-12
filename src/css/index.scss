@@ -83,7 +83,7 @@ main {
     }
     footer {
         font-size: 0.8em;
-        margin: 1rem 1rem 2rem 1rem;
+        margin: 3rem 1rem 2rem 1rem;
     }
     @media screen and (min-width: 500px) {
         .top h1 {
@@ -278,8 +278,5 @@ h1 {
     svg {
         width: 5rem;
         margin-right: 0.5rem;
-    }
-    section {
-        margin-bottom: 4em;
     }
 }
