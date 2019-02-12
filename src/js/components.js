@@ -17,13 +17,6 @@ wickedElements.define('.nav-link', {
     }
 });
 
-wickedElements.define('.back-link', {
-    onclick: function (event) {
-        event.preventDefault();
-        window.history.back();
-    },
-});
-
 wickedElements.define('.route-dispatcher', {
     init: function (event) {
         this.el = event.currentTarget;
