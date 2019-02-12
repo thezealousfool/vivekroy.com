@@ -1,0 +1,23 @@
+#contact {
+    section {
+        text-align: center;
+    }
+    ul {
+        list-style: none;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    a {
+        display: inline-flex;
+        align-items: center;
+        span {
+            margin-right: 1rem;
+        }
+    }
+    svg {
+        width: 5rem;
+        margin-right: 0.5rem;
+    }
+}
+
