@@ -1,9 +1,10 @@
 window.addEventListener('load', function (event) {
-    var caches = null;
+    var caches = ['/', '/blog', '/about', '/contact'];
     switch (window.location.pathname) {
-        case '/':
-        case '/about':
-        case '/contact': caches = ['/', '/about', '/contact']; break;
+        case '/': animate('#home', 'animin'); break;
+        case '/about.html': animate('#about', 'animin'); break;
+        case '/contact.html': animate('#contact', 'animin'); break;
+        case '/blog/': animate('#blog', 'animin'); break;
         default: caches = [];
     };
     document.querySelector('.route-dispatcher').dispatchEvent(new CustomEvent('cacheRoute', {
@@ -13,3 +14,10 @@ window.addEventListener('load', function (event) {
         },
     }));
 });
+
+function animate(selector, className) {
+    var elem = document.querySelector(selector);
+    if (elem) {
+        elem.classList.add(className);
+    }
+}
