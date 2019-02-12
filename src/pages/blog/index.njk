@@ -1,0 +1,60 @@
+{% extends 'layout.njk' %}
+
+{% block title %}Vivek Roy{% endblock %}
+
+{% block headmeta %}
+    <link rel="stylesheet" href="/css/index.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+    <script type="text/javascript" src="/js/components.js"></script>
+{% endblock %}
+
+{% block content %}
+<body class="route-dispatcher">
+    <main id="blog" class="route-handler" role="main">
+        <div class="top">
+            <div class="back"></div>
+            <h1>
+                <a class="nav-link" href="/" get="main" to="main">
+                    <div class="arrow"></div>
+                    <span>Blog</span>
+                </a>
+            </h1>
+        </div>
+        <div class="bottom">
+            <section>
+                <article>
+                    <div class="date"><span class="day">06</span><span class="month">Feb</span></div>
+                    <div>
+                        <a class="nav-link" href="" to="main"><h1>Why C++ in 2019</h1></a>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fermentum felis mattis maximus consectetur. Proin sit amet venenatis.</p>
+                    </div>
+                </article>
+                <article>
+                    <div class="date"><span class="day">03</span><span class="month">Feb</span></div>
+                    <div>
+                        <a class="nav-link" href="" to="main"><h1>SVG Brilliance</h1></a>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fermentum felis mattis maximus consectetur. Proin sit amet venenatis.</p>
+                    </div>
+                </article>
+                <article>
+                    <div class="date"><span class="day">01</span><span class="month">Feb</span></div>
+                    <div>
+                        <a class="nav-link" href="" to="main"><h1>Linux Chauvinism</h1></a>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fermentum felis mattis maximus consectetur. Proin sit amet venenatis.</p>
+                    </div>
+                </article>
+                <article>
+                    <div class="date"><span class="day">31</span><span class="month">Jan</span></div>
+                    <div>
+                        <a class="nav-link" href="" to="main"><h1>Simplest Linux</h1></a>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fermentum felis mattis maximus consectetur. Proin sit amet venenatis.</p>
+                    </div>
+                </article>
+            </section>
+        </div>
+        <footer>
+            <p>Copyright. Vivek Roy. <br> 2018-19. All rights reserved.</p>
+        </footer>
+    </main>
+</body>
+{% endblock %}
