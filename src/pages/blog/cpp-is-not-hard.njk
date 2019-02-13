@@ -1,0 +1,105 @@
+{% extends 'layout.njk' %}
+
+{% block title %}Vivek Roy{% endblock %}
+
+{% block headmeta %}
+    <link rel="stylesheet" href="/css/index.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+    <script type="text/javascript" src="/js/components.js"></script>
+{% endblock %}
+
+{% block content %}
+<body class="route-dispatcher">
+    <main id="blog" class="route-handler" role="main">
+        <div class="top">
+            <div class="back"></div>
+            <h1>
+                <a class="nav-link" href="/blog" get="main" to="main">
+                    <div class="arrow"></div>
+                    <span>Blog</span>
+                </a>
+            </h1>
+        </div>
+        <div class="bottom">
+            <section class="post">
+                <h1 class="title">C++ is NOT hard.</h1>
+                <div class="pdate">February 03, 2019</div>
+                <section>
+                    <p>A common notion in the programming world is that C++ is a hard. I beg to differ. In my opinion, C++, especially modern C++, is a simple language by default and if YOU are willing to keep it that way. But, if you want granular control over what your code does, C++ offers you the power to do that at the cost of simplicity. The key here is that you can chose not to pay the price and still be able to use the language. Granted, I am not an expert of C++, maybe not even in the intermediate level, but I am really enthusiastic about the language and the power and capabilities it provides. I have been using the language for educational purposes for quite some time now, but haven’t used it in a corporate environment. I am sure when a language is used by a large number of developers spread across a significant number of teams on a huge project, a lot of problems arise which aren’t so prominent when a single motivated programmer is working on a small project. In this one-sided conversation, I will convey my thoughts of C++ as modern programming language.</p>
+                </section>
+                <section>
+                    <h1>Complaints</h1>
+                    <p>People who have learnt programming in some other language, when they see C++ they have some complaints. Lets address some of those by comparing C++ to Python and Java which has been accepted by a large number of developers and non-developers alike to be the best first languages.</p>
+                    <h2>We have to write too much to accomplish simple goals.</h2>
+                    <div class="code">
+                    <pre><code class="language-python">list = [ 1,2,3,4,5 ]
+for element in list:
+    print(element)</code></pre>
+                    <p>Fig. 1: Python code to print elements of a list.</p>
+                    </div>
+                    <div class="code">
+                    <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main() {
+    auto list = std::vector{ 1,2,3,4,5 };
+    for (const auto element : list) {
+        std::cout &lt;&lt; element &lt;&lt; '\n';
+    }
+}</code></pre>
+                    <p>Fig. 2: C++ code to print elements of array.</p>
+                    </div>
+                    <p>This is one of the first complaints people have when they look at the language for the very first time. It is true, but not completely true.</p>
+                    <p>Ignoring the include lines and the other decorations that the language requires us to write, both require us to write 3 lines of code to declare an array/list and print out its elements. About those punctuations in code - you get used to it pretty quickly, give it a chance. A few modern C++ features to point out here would be:</p>
+                    <ul>
+                        <li><a class="underline" target="_blank" rel="noopener noreferrer" href="https://en.cppreference.com/w/cpp/language/range-for">Range based for loops</a> for iterating over the elements of an array. (C++11)</li>
+                        <li><a class="underline" target="_blank" rel="noopener noreferrer" href="https://en.cppreference.com/w/cpp/language/auto">auto</a> type deduction. (C++11)</li>
+                        <li><a class="underline" target="_blank" rel="noopener noreferrer" href="https://en.cppreference.com/w/cpp/language/list_initialization">List initialization</a> for universal initialization. (C++11)</li>
+                        <li><a class="underline" target="_blank" rel="noopener noreferrer" href="https://en.cppreference.com/w/cpp/language/class_template_argument_deduction">Class template argument deduction</a> for deducting the vector to be a vector of integers without having to specify explicitly. (C++17)</li>
+                    </ul>
+                    <p>The last and most recent feature might not be something that I completely agree makes large code-bases more readable, especially when combined with auto everywhere, but IDE users should not face any problem.</p>
+                    <h2>Manual memory management is hard. I love Garbage Collectors.</h2>
+                    <p>I agree, manual management is hard, but I don’t think “Garbage Collector” is the right solution to the problem. Computer hardware does not provide garbage collectors; computer hardware requires memory management. Garbage collectors are layers on top of the hardware memory that tells you “You write the logic, I’ll manage the memory for you”. But, <strong>programming is as much about data as it is about logic</strong> and <strong>garbage collectors are overhead</strong> without which we can live. Modern C++ standards have introduced abstractions in the language that help manage memory for you by counting references to heap allocations (<a class="underline" target="_blank" rel="noopener noreferrer" href="https://en.cppreference.com/book/intro/smart_pointers">smart pointers</a>). C++ follows the idiom of <a class="underline" target="_blank" rel="noopener noreferrer" href="https://en.cppreference.com/w/cpp/language/raii">Resource Acquisition is Initialization (RAII)</a>, which gives me predictable life-cycles for my variables and objects alike. For example,</p>
+                    <div class="code">
+                        <pre><code class="language-java">class Test {
+    public void do_something() {
+        MySpecialObj a = new MySpecialObj();
+        a.call();
+    }
+}</code></pre>
+                        <p>Fig. 3: Java code with a local object.</p>
+                    </div>
+                    <div class="code">
+                        <pre><code class="language-cpp">void do_something() {
+    auto a = MySpecialObj();
+    a.call();
+}</code></pre>
+                        <p>Fig. 4: C++ code with local object.</p>
+                    </div>
+                    <p>In Java, when we reach the end of the function call do_something, the object ‘a’ is marked for deletion but is not immediately deallocated. You cannot predict when that memory will be deallocated. If the program is out of free memory, the garbage collector will kick in and then deallocate the memory. When exactly will that happen cannot be predicted. In C++ the end of the function call marks the deallocation of the memory (the object above is created on the stack and thus popping of the stack frame marks the deallocation of the object calling the object’s deallocator). The problem with the garbage collector kicking in periodically or when out of resources is that at that moment the <em>application is halted</em> while the garbage collector goes through the memory table and figures out which memory locations can be deallocated. An analogy here will be - you are given one task everyday, but instead of doing them on a daily basis you note down the task and when you face one of the deadlines, you do all the tasks noted down till then together. Garbage collectors in reality do much more than I just stated in various sophisticated ways and can end up being really good at the job, but at the end of the day they are something we can live without so why make our already complicated lives more complicated.</p>
+                    <h2>I hate statically typed languages. Dynamic languages are so much easier to work with.</h2>
+                    <p>I completely disagree on this. Static typing is something which you will appreciate a lot even if you move on to do something a little more complicated than printing elements of a list or some basic algorithms. They protect you from making silly errors and only make you sweat on the more complicated errors that we humans can make.</p>
+                    <p>Dynamic interpreted scripting languages like Python and Javascript are among the most popular programming languages. But even for them static typing systems have been introduced on top of the language to make them usable in large code bases; namely <strong><a class="underline" target="_blank" rel="noopener noreferrer" href="http://mypy-lang.org/">mypy</a></strong> and <strong><a class="underline" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">Typescript</a></strong> respectively. The folks at Dropbox and Microsoft felt static typing essential for their projects for a reason after all. At more than one instance I have used a variable named <code class="inline">img</code> as the filename for the image to be loaded and <code class="inline">img_data</code> for the actual image matrix and then passed <code class="inline">img</code> to a function where I should have sent <code class="inline">img_data</code>. I know I am poor at naming variables, but let’s be honest, we all are. A static type-checker or compiler would have easily caught such an error and saved me some time trying to debug such silly errors. Then comes those bugs where I use a variable name for some purpose and 20 lines down I forget about the previous use and reuse the variable for something else. This type of errors has led me to hours of Python debugging which would not be necessary had only a type-checker been there. I know I know, my functions should be small and do a single thing, but we all make compromises for scripts that we will never reuse, right? Computers are good at catching such mistakes so why not use their power?</p>
+                </section>
+                <section>
+                    <h1>My Complaints</h1>
+                    <p>Now lets talk about some complaints I have about the language where other modern languages like <a class="underline" target="_blank" rel="noopener noreferrer" href="https://golang.org/">Golang</a> and <a class="underline" target="_blank" rel="noopener noreferrer" href="https://www.rust-lang.org/">Rust</a> have shown what is possible. (C++ has some real competition in the form of Rust which can prove to be a good modern alternative)</p>
+                    <h2>Better error messages</h2>
+                    <p>The error messages provided by the compilers aren’t the most useful. If you just hang on there and try really hard, there are a ton of information in them that can help you precisely point out the errors. But hey compiler, can you be a little more specific about what you mean? Newer languages like Golang and Rust provide much better error messages and assistance in solving those compiler errors.</p>
+                    <h2>Easy tooling</h2>
+                    <p>Tooling is VERY important. C++ has been around for a really long time and thus a large number of tools have been developed around the language. From build systems to testing, benchmarking and debugging tools. Rust has a official package manager called cargo which fetches you the dependencies for your project, runs your tests, builds and packages your project ready for distribution. Golang in a similar fashion uses the go command to not just compile the code but also do everything that cargo does for Rust.</p>
+                    <h2>Faster standardization process</h2>
+                    <p>The C++ standards committee have been doing a great job for a very long time now. Every feature before being added to the language goes through a lot of scrutiny and that is essential. I understand that once a feature has been added to the standard, it will live in the language forever. Considering how big C++ as a language already is, adding new things to it have to be done carefully. I get that. But the impatient kid inside me would like to see new exciting additions to the language a little more often that would make my code more elegant and more importantly correct.</p>
+                </section>
+                <hr />
+                <section>
+                <p>Thank you for reading. Like I said before, I am not an expert of C++ and its ecosystem, so feel free to correct me if I am wrong or if you would like to point out something I might have missed by emailing me your comments and suggestions to <a class="underline" href="mailto:vivek@vivekroy.com">vivek@vivekroy.com</a>. See you later.</p>
+                </section>
+            </section>
+        </div>
+        <footer>
+            <p>Copyright. Vivek Roy. <br> 2018-19. All rights reserved.</p>
+        </footer>
+    </main>
+</body>
+{% endblock %}

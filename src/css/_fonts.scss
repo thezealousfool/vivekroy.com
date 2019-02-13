@@ -13,25 +13,30 @@ body {
     font-size: 1.2em;
     font-weight: 400;
     color: #222;
+}
 
+h1 {
+    font-size: 2em;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+@media screen and (max-width: 500px) {
     h1 {
-        font-size: 2em;
-        letter-spacing: -0.02em;
+        font-size: 1.67em;
     }
-
     h2 {
-        font-size: 1.5em;
+        font-size: 1.25em;
     }
+}
 
-    @media screen and (max-width: 500px) {
-        h1 {
-            font-size: 1.67em;
-        }
-        h2 {
-            font-size: 1.25em;
-        }
-    }
-    @media screen and (min-width: 900px) {
-        font-size: 1.4em;
-    }
+@media screen and (min-width: 900px) {
+    font-size: 1.4em;
+}
+
+code {
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }

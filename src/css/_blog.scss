@@ -1,3 +1,5 @@
+@import 'prism_tomorrow';
+
 #blog {
     .bottom {
         margin-left: 0.5rem;
@@ -36,6 +38,57 @@
     }
     .month {
         font-size: 2em;
+    }
+    .post {
+        .title {
+            font-size: 3em;
+            margin-bottom: 0.1em;
+        }
+        .pdate {
+            font-size: 1.2em;
+            margin-bottom: 1.5em;
+            margin-left: 1em;
+            color: #777;
+        }
+        .underline {
+            border-bottom: 1px solid;
+        }
+        section {
+            margin-top: 2em;
+            margin-bottom: 2em;
+        }
+        h2,h3 {
+            margin-top: 1.6em;
+            margin-bottom: .8em;
+        }
+        p {
+            margin-top: .7em;
+            margin-bottom: .7em;
+        }
+        ul {
+            padding-left: 1.5em;
+        }
+        li {
+            margin: .5em 0 .5em 0;
+        }
+        hr {
+            width: 200px;
+            margin: auto;
+        }
+        .code {
+            padding: 1rem;
+            box-sizing: border-box;
+            pre {
+                border-radius: 4px;
+            }
+            p {
+                font-size: 0.85em;
+                text-align: center;
+            }
+        }
+        code.inline {
+            color: inherit;
+        }
     }
 }
 

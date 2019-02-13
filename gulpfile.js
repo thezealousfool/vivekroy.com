@@ -10,6 +10,7 @@ const watch = require('gulp-watch');
 const njkRender = require('gulp-nunjucks-render');
 const sass = require('gulp-sass');
 const util = require('gulp-util');
+const highlight = require('gulp-prism');
 
 sass.compiler = require('node-sass');
 const PRODUCTION = !!util.env.production;
@@ -43,6 +44,7 @@ gulp.task('js', function() {
 gulp.task('html', function() {
     return gulp.src(path.join('src', 'pages', '**', '*.njk'))
             .pipe(njkRender({ path: [path.join('src', 'templates')] }))
+            .pipe(highlight())
             .pipe(htmlmin({collapseWhitespace: true, minifyCSS: true}))
             .pipe(gulp.dest('dist'));
 });
