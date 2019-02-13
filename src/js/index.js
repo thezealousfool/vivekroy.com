@@ -1,9 +1,9 @@
 window.addEventListener('load', function (event) {
-    var caches = ['/', '/blog', '/about', '/contact'];
+    var caches = ['/', '/blog/', '/about', '/contact'];
     switch (window.location.pathname) {
         case '/': animate('#home', 'animin'); break;
-        case '/about.html': animate('#about', 'animin'); break;
-        case '/contact.html': animate('#contact', 'animin'); break;
+        case '/about': animate('#about', 'animin'); break;
+        case '/contact': animate('#contact', 'animin'); break;
         case '/blog/': animate('#blog', 'animin'); break;
         default: caches = [];
     };

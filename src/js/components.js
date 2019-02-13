@@ -94,10 +94,23 @@ wickedElements.define('.route-dispatcher', {
 
 wickedElements.define('.route-handler', {
     onhandleRoute: function (event) {
-        var newNode = event.detail.doc.querySelector(event.detail.get);
+        var newDoc = event.detail.doc;
+        var newNode = newDoc.querySelector(event.detail.get);
         var oldNode = document.querySelector(event.detail.get);
         if (!oldNode || !newNode) return;
         var newNodeClone = newNode.cloneNode(true)
         oldNode.parentNode.replaceChild(newNodeClone, oldNode);
+        var scripts = newDoc.querySelectorAll('script');
+        for (var i = 0; i < scripts.length; i++) {
+            var scriptsrc = scripts[i].getAttribute('src');
+            if (scriptsrc) {
+                if (!document.querySelector(`script[src="${scriptsrc}"]`)) {
+                    console.log('loading', scriptsrc);
+                    var newScript = document.createElement('script');
+                    newScript.setAttribute('src', scriptsrc);
+                    document.head.appendChild(newScript);
+                }
+            }
+        }
     },
 });
