@@ -40,14 +40,16 @@
         font-size: 2em;
     }
     .post {
+        margin-left: 1.5rem;
         .title {
             font-size: 3em;
             margin-bottom: 0.1em;
+            line-height: 1;
         }
         .pdate {
             font-size: 1.2em;
             margin-bottom: 1.5em;
-            margin-left: 1em;
+            margin-left: .5em;
             color: #777;
         }
         .underline {
