@@ -4,7 +4,7 @@
   <path fill="#659ad2" d="M302 86c-2-4-6-8-9-10L166 3c-7-4-19-4-26 0L13 76C6 80 0 91 0 99v146c0 4 1 9 4 13l149-86z"/>
   <path fill="#fff" d="M153 274a102 102 0 1 1 88-153l-44 26c-9-16-26-26-44-26a51 51 0 1 0 44 77l44 25c-18 32-52 51-88 51z"/>
   <path fill="#fff" d="M244 189v-11h11v-11h-11v-12h-12v12h-11v11h11v11zM286 189v-11h12v-11h-12v-12h-11v12h-11v11h11v11z"/>
-  <text x="328" y="136" font-weight="700" font-size="75">
+  <text x="328" y="136" font-weight="700" font-size="75" font-family="BlinkMacSystemFont,-apple-system,Roboto,Segoe UI,Fira Sans,Ubuntu,Oxygen-Sans,Cantarell,Helvetica Neue,Arial,sans-serif">
     <tspan x="328" y="136">is</tspan>
     <tspan x="329" y="199" font-weight="900">NOT</tspan>
     <tspan x="329" y="266">hard</tspan>
