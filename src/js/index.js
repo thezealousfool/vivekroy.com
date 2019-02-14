@@ -30,7 +30,6 @@ wickedElements.define('main', {
         this.el.classList.add('animout');
         this.event = event;
         window.setTimeout((function () {
-            this.el.classList.remove('animout');
             this.el.dispatchEvent(new CustomEvent('handleRoute', {
                 bubbles: false,
                 detail: this.event.detail,

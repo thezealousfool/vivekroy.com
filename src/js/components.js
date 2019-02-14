@@ -42,11 +42,15 @@ wickedElements.define('.route-dispatcher', {
         if (elem) {
             event.preventDefault();
             var push = event.detail.push !== undefined ? event.detail.push : true;
-            if (event.detail.href in this.views) {
-                this.dispatchEvent(elem, event.detail, push);
-            } else {
-                this.xhr(elem, event.detail, push);
-            }
+            elem.dispatchEvent(new CustomEvent('beforeHandleRoute', {
+                bubbles: false,
+                detail: {
+                    href: event.detail.href,
+                    to: event.detail.to,
+                    get: event.detail.get,
+                }
+            }));
+            this.xhr(elem, event.detail, push);
         }
     },
     oncacheRoute: function (event) {
@@ -56,7 +60,7 @@ wickedElements.define('.route-dispatcher', {
         cache = cache | false;
         if (detail.href in this.views) {
             if (!cache)
-                this.dispatchEvent(elem, event.detail, push);
+                this.dispatchEvent(elem, detail, push);
             return;
         }
         var xhr = new XMLHttpRequest();
@@ -80,7 +84,7 @@ wickedElements.define('.route-dispatcher', {
                 get: detail.get,
             }, null, detail.href);
         }
-        elem.dispatchEvent(new CustomEvent('beforeHandleRoute', {
+        elem.dispatchEvent(new CustomEvent('documentLoaded', {
             bubbles: false,
             detail: {
                 href: detail.href,
@@ -93,10 +97,38 @@ wickedElements.define('.route-dispatcher', {
 });
 
 wickedElements.define('.route-handler', {
+    init: function (event) {
+        this.el = event.currentTarget;
+        this.handleState = {};
+    },
     onhandleRoute: function (event) {
-        var newDoc = event.detail.doc;
-        var newNode = newDoc.querySelector(event.detail.get);
-        var oldNode = document.querySelector(event.detail.get);
+        var path = event.detail.href;
+        if (path in this.handleState && this.handleState[path].loaded) {
+            this.changeContent({
+                href: event.detail.href,
+                to: event.detail.to,
+                get: event.detail.get,
+                doc: this.handleState[path].content,
+            });
+        } else {
+            if (!this.handleState[path]) this.handleState[path] = {};
+            this.handleState[path].anim = true;
+        }
+    },
+    ondocumentLoaded: function (event) {
+        var path = event.detail.href;
+        if (path in this.handleState && this.handleState[path].anim) {
+            this.changeContent(event.detail);
+        } else {
+            if (!this.handleState[path]) this.handleState[path] = {};
+            this.handleState[path].loaded = true;
+            this.handleState[path].content = event.detail.doc;
+        }
+    },
+    changeContent: function (detail) {
+        var newDoc = detail.doc;
+        var newNode = newDoc.querySelector(detail.get);
+        var oldNode = document.querySelector(detail.get);
         if (!oldNode || !newNode) return;
         var newNodeClone = newNode.cloneNode(true)
         oldNode.parentNode.replaceChild(newNodeClone, oldNode);
