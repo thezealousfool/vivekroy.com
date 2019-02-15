@@ -3,8 +3,8 @@
   <path d="M140,200 l-10,-10 l75,-75 z" fill="#ee4f2f"/>
   <circle cx="135" cy="195" r="15" fill="#0c3c62"/>
   <path d="M35,195 a 100 100 0 0 1 155 -80 l-13 13 a 100 100 0 0 0 -142 67" fill="#f29131"/>
-  <circle cx="95" cy="255" r="10" fill="#948c89"/>
-  <circle cx="155" cy="255" r="10" fill="#948c89"/>
+  <circle cx="105" cy="255" r="10" fill="#948c89"/>
+  <circle cx="165" cy="255" r="10" fill="#948c89"/>
   <text font-weight="700" font-size="60" font-family="BlinkMacSystemFont,-apple-system,Segoe UI,Fira Sans,Roboto,Ubuntu,Oxygen-Sans,Cantarell,Helvetica Neue,Arial,sans-serif">
     <tspan x="55" y="55">Performance</tspan>
     <tspan x="255" y="120" font-weight="900">ALWAYS</tspan>
