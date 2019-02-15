@@ -21,7 +21,9 @@ wickedElements.define('.route-dispatcher', {
     init: function (event) {
         this.el = event.currentTarget;
         this.views = {};
-        this.views[window.location.pathname] = document.cloneNode(true);
+        window.addEventListener('onload', (function (event) {
+            this.views[window.location.pathname] = document.cloneNode(true);
+        }).bind(this));
     },
     onconnected: function (event) {
         window.onpopstate = (function (event) {
@@ -137,7 +139,6 @@ wickedElements.define('.route-handler', {
             var scriptsrc = scripts[i].getAttribute('src');
             if (scriptsrc) {
                 if (!document.querySelector(`script[src="${scriptsrc}"]`)) {
-                    console.log('loading', scriptsrc);
                     var newScript = document.createElement('script');
                     newScript.setAttribute('src', scriptsrc);
                     document.head.appendChild(newScript);
