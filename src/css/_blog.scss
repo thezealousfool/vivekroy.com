@@ -111,7 +111,7 @@
         animation-name: slideDownExpo;
         h1 {
             animation-name: slideDownExpo;
-            animation-delay: 0.5s;
+            animation-delay: 0.2s;
         }
     }
     .post {
@@ -123,13 +123,14 @@
         animation-duration: 0.5s;
         @for $i from 0 through 4 {
             &:nth-child(#{($i + 1)}) {
-                animation-delay: #{(1 + $i * 0.15)}s;
+                animation-delay: #{(.3 + $i * 0.15)}s;
             }
         }
     }
     footer {
         animation-name: fadeIn;
-        animation-delay: 1.5s;
+        animation-delay: 1s;
+        animation-duration: .5s;
     }
     @media screen and (min-width: 500px) and (max-height: 500px),
            screen and (min-width: 900px) {

@@ -21,7 +21,7 @@ function animate(selector, className, duration) {
         elem.classList.add(className);
         window.setTimeout(function () {
             elem.classList.remove(className);
-        }, 2600);
+        }, 1500);
     }
 }
 
@@ -34,12 +34,12 @@ wickedElements.define('main', {
                 bubbles: false,
                 detail: this.event.detail,
             }));
-        }).bind(this), 1100);
+        }).bind(this), 1000);
     },
     onconnected: function (event) {
         this.el.classList.add('animin');
         window.setTimeout((function () {
             this.el.classList.remove('animin');
-        }).bind(this), 2600);
+        }).bind(this), 1500);
     },
 });
