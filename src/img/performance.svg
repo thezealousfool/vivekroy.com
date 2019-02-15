@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 610 250">
-  <circle cx="125" cy="125" r="117.5" fill="none" stroke="#0c3c62" stroke-width="15"/>
-  <path d="M130,130 l-10,-10 l75,-75 z" fill="#ee4f2f"/>
-  <circle cx="125" cy="125" r="15" fill="#0c3c62"/>
-  <path d="M25,125 a 100 100 0 0 1 155 -80 l-13 13 a 100 100 0 0 0 -142 67" fill="#f29131"/>
-  <circle cx="95" cy="185" r="10" fill="#948c89"/>
-  <circle cx="155" cy="185" r="10" fill="#948c89"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 506 320">
+  <circle cx="125" cy="195" r="117.5" fill="none" stroke="#0c3c62" stroke-width="15"/>
+  <path d="M130,200 l-10,-10 l75,-75 z" fill="#ee4f2f"/>
+  <circle cx="125" cy="195" r="15" fill="#0c3c62"/>
+  <path d="M25,195 a 100 100 0 0 1 155 -80 l-13 13 a 100 100 0 0 0 -142 67" fill="#f29131"/>
+  <circle cx="95" cy="255" r="10" fill="#948c89"/>
+  <circle cx="155" cy="255" r="10" fill="#948c89"/>
   <text font-weight="700" font-size="60" font-family="BlinkMacSystemFont,-apple-system,Segoe UI,Fira Sans,Roboto,Ubuntu,Oxygen-Sans,Cantarell,Helvetica Neue,Arial,sans-serif">
-    <tspan x="255" y="70">Performance</tspan>
-    <tspan x="280" y="140" font-weight="900">ALWAYS</tspan>
-    <tspan x="260" y="207">matters</tspan>
+    <tspan x="55" y="55">Performance</tspan>
+    <tspan x="245" y="120" font-weight="900">ALWAYS</tspan>
+    <tspan x="265" y="180">matters</tspan>
   </text>
 </svg>
