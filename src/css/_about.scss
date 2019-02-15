@@ -1,15 +1,24 @@
 #about {
-    em {
-        display: flex;
+    .img {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    img {
+        border-radius: 50%;
+        width: 80%;
+        max-width: 350px;
+        box-shadow: 0 5px 25px 5px rgba(0,0,0,.25);
     }
     .period {
         font-size: 0.8em;
-        text-align: right;
-        display: inline-block;
     }
 }
 
 #about.animin {
+    .img {
+        animation-name: bounceIn;
+        animation-delay: .7s;
+    }
     .top {
         animation-name: slideDownExpo;
         h1 {
@@ -45,6 +54,10 @@
 #about.animout {
     * {
         animation-fill-mode: forwards;
+    }
+    .img {
+        animation-name: fadeOut;
+        animation-duration: .5s;
     }
     .top {
         animation-name: slideUpExpo;
