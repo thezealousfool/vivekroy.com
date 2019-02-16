@@ -134,7 +134,7 @@ wickedElements.define('.route-handler', {
         if (!oldNode || !newNode) return;
         var newNodeClone = newNode.cloneNode(true)
         oldNode.parentNode.replaceChild(newNodeClone, oldNode);
-        var scripts = newDoc.querySelectorAll('script');
+        var scripts = newDoc.getElementsByTagName('script');
         for (var i = 0; i < scripts.length; i++) {
             var scriptsrc = scripts[i].getAttribute('src');
             if (scriptsrc) {
@@ -144,6 +144,18 @@ wickedElements.define('.route-handler', {
                     document.head.appendChild(newScript);
                 }
             }
+        }
+        var meta = document.getElementsByTagName('meta');
+        console.log('removing', meta.length, 'nodes');
+        for (var i = meta.length-1; i >= 0; i--) {
+            if (meta[i].getAttribute('name') || meta[i].getAttribute('property'))
+                meta[i].parentNode.removeChild(meta[i]);
+        }
+        meta = newDoc.getElementsByTagName('meta');
+        console.log('adding', meta.length, 'nodes');
+        for (var i = 0; i < meta.length; i++) {
+            if (meta[i].getAttribute('name') || meta[i].getAttribute('property'))
+                document.head.appendChild(meta[i].cloneNode(true));
         }
     },
 });
