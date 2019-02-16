@@ -1,4 +1,10 @@
 window.addEventListener('load', function (event) {
+    window.setTimeout(function () {
+        document.querySelector('aside').style.display = 'block';
+    }, 3000);
+    window.setTimeout(function () {
+        document.querySelector('aside').style.display = 'none';
+    }, 9000);
     var caches = ['/', '/blog/', '/about', '/contact'];
     switch (window.location.pathname) {
         case '/': animate('#home', 'animin'); break;
