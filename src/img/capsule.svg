@@ -1,0 +1,16 @@
+<svg viewBox="0 0 528 438" xmlns="http://www.w3.org/2000/svg">
+ <path d="m345 246c6-26 8-52 5-79-4-40-19-79-43-111 8-3 18-4 26-6 29-6 57-11 86-17 23-2 47 5 63 21 23 20 32 51 34 81 2 30-11 62-36 79-8 4-92 26-135 33l-0.5-0.3z" fill="#44a190"/>
+ <g fill="#344e67">
+  <path d="m191 247c-37-6-75-11-112-17-66-19-77-87-58-141 11-28 37-52 68-55 11-1 20-0.6 29 0.9 34 5 68 10 102 15 7 9 12 31 10 41-28-4-80-13-108-17-13-0.5-17 20-4 24 35 6 76 11 111 17 5 65-23 110-38 132l-1 0.7-1-0.3z"/>
+  <path d="m240 213h12v-12h17v12h12v16h-12v12h-17v-12h-12z"/>
+  <path d="m281 270h14v-14h19v13h14v18h-14v14h-19v-14h-13z"/>
+ </g>
+ <g fill="#44a190">
+  <path d="m303 229h8v-8h11v8h8v10h-8v8h-11v-8h-8z"/>
+  <path d="m219 284h11v-11h16v11h12v16h-12v12h-16v-11h-11z"/>
+ </g>
+  <text font-family="BlinkMacSystemFont,-apple-system,Segoe UI,Fira Sans,Roboto,Ubuntu,Oxygen-Sans,Cantarell,Helvetica Neue,Arial,sans-serif" font-size="60px" font-weight="700">
+   <tspan x="15" fill="#344e67" y="395">Capsule</tspan>
+   <tspan x="250" fill="#44a190" y="395">Networks</tspan>
+  </text>
+</svg>

@@ -1,0 +1,79 @@
+{% extends 'layout.njk' %}
+
+{% block title %}Vivek Roy{% endblock %}
+
+{% block headmeta %}
+    <link rel="stylesheet" href="/css/index.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+    <script type="text/javascript" src="/js/components.js"></script>
+    <meta name="description" content="Hi, I am Vivek Roy. People often justify sloppy code by saying 'Performance doesn't matter here'. Here are my thoughts and reactions on the topic."/>
+    <meta property="og:title" content="Performance Always Matters | Vivek Roy"/>
+    <meta property="og:image" content="https://vivekroy.com/img/performance.png"/>
+    <meta property="og:image" content="https://vivekroy.com/img/performance_square.png"/>
+    <meta name="twitter:image" content="https://vivekroy.com/img/performance_square.png"/>
+    <meta property="og:image" content="https://vivekroy.com/img/performance_small.png"/>
+    <meta property="og:url" content="https://vivekroy.com/blog/performance-always-matters"/>
+    <meta property="og:description" content="Hi, I am Vivek Roy. People often justify sloppy code by saying 'Performance doesn't matter here'. Here are my thoughts and reactions on the topic."/>
+{% endblock %}
+
+{% block content %}
+<body class="route-dispatcher">
+    <main id="blog" class="route-handler" role="main">
+        <div class="top">
+            <div class="back"></div>
+            <h1>
+                <a class="nav-link" href="/blog/" get="main" to="main">
+                    <div class="arrow"></div>
+                    <span>Blog</span>
+                </a>
+            </h1>
+        </div>
+        <div class="post bottom">
+            <section>
+                <h1 class="title">Performance ALWAYS matters.</h1>
+                <h2 class="pdate">February 06, 2019</h2>
+                <img class="banner" src="/img/performance.svg" alt="Performance always matters">
+                <section>
+                    <p>I have heard people saying that as our computers are becoming faster every day, memory is becoming cheaper and as a result more abundant, programmers don't need to think about performance anymore. In my opinion, that is not true. Performance always matters no matter if you are serving over 1 billion hours of video per day or if you are making your first blog. The question that remains to be answered is "How good is good enough?" and not "Does performance matter here?".</p>
+                </section>
+                <section>
+                    <h1>But people say...</h1>
+                    <p>There's a saying that "95% of execution time is spent in 5% of the code" - this is popular as the <strong>5-95 Rule</strong>. As a response to this is the "Tune, don't optimize" saying - which says that you should try to find which 5% of the code is responsible for 95% of the execution time and then think about how to make that perform better.</p>
+                    <p>While these kinds of rules and sayings prevent programmers from rewriting a big project from the ground up and as a result incur business losses like in the Netscape vs IE case, they are not true. If performance is an after-thought, you will end up at a state where you cannot do much to improve performance. In most cases a full design change is required to make things go faster.</p>
+                    <p>But optimized code is ugly and unreadable, right? In a previous post I wrote about C++ and how it can be readable. And it is not news that it can be really fast if done correctly. Yes, I am kind of biased here, but in my opinion C++ provides all the tools and techniques to make your code both optimal and readable. This is something missing from C and thus the need for C++. People call it <strong>zero-cost abstraction</strong>.</p>
+                </section>
+                <section>
+                    <h1>Is it worth the time?</h1>
+                    <p>Sometimes that cost of making something perform better is more than the improvement it will yield. In that case people settle, but that means it is good enough for them, not that it doesn't matter if it were better. So how do we decide how good is good enough? It never is good enough forever. It can be good enough for now, but at some time in future it won't be good enough.</p>
+                    <p>When YouTube started, it was not made to serve a billion hours of video content per day. It started small and maybe inefficient. But as they grew so did the need to be efficient. At a report in 2007, Amazon stated that every 100ms of latency costed them 1% in sales. 1% isn't a small number when we talking about billions of dollars.</p>
+                    <p>Lets look at some needs outside of the industry. In a recent internship I encountered a python script that was supposed to load a csv file and apply some transformations to the data and generate npy files. I was given the script to modify it as the script needed to be run on a 80GB dataset and it was getting out of memory to do so. Looking at the script it was evident why.</p>
+                    <p>The script would load the whole dataset into memory, and then after applying the transformations, write them to another object in memory. Clearly that means a peak memory requirement of at least 160GB of memory if not more on a machine with 128GB RAM. I rewrote the script which ran in 10GB of peak memory requirement and 2x faster. The rewrite wasn't trivial as the script was doing calculations on the whole data and I had to come up with a way of doing those in an incremental fashion, so I would not blame the original programmer. He probably thought it was good enough when he wrote the script, not knowing that his script will be later run on a 80GB dataset.</p>
+                    <p>Then comes the value of time. Time spent at making your code run faster will give you more time iterating on the end product. A program that gives its result after 20 hours will slow down the whole development by iteration process. In a stackexchange answer to "End-to-end tests are running for 5 hours" the argument of having more powerful machines was as follows - "So the tests take 5 hours. Lets say that means that 4 people have to wait a couple of times week for that. So that is 40 hours in lag time, in other words a full developers time. If a developer costs $70,000 a year, how much should you spend on vm's in comparison?". Programmers like Alan Talbot have proved that good design can bring test times of 2700 test from 70 minutes to 20 seconds (200x speedup) without any change in hardware.</p>
+                </section>
+                <section>
+                    <h1>Performance code is more than just speed</h1>
+                    <p>Performance is not about just how <em>fast</em> it is. Like in my previous example, it can also mean memory requirement, power requirement, network bandwidth and so on. People thought to make things faster, lets add more hardware to the problem and we won't have to worry about performance anymore; we can write shit code and call it the problem of the hardware guys that it is not fast enough. But more hardware means more power consumption and physical space requirement. According to Forbes, global data centers used roughly 416 terawatts (4.16 x 1014 watts) (or about 3% of the total electricity) in 2017. Not just data centers, power consumption is also critical in battery powered devices like mobile phones and laptops. You don't want better battery life for your phone or laptop, do you?</p>
+                    <p>Then come Amdahl's law shouting that good design is more important than more hardware.</p>
+                </section>
+                <section>
+                    <h1>In conclusion</h1>
+                    <ul>
+                        <li><p>The speed of computers are increasing but so are our needs. Data is increasing faster than computers and so the need to have more efficient programs. <em>The demand for better performance is never ending.</em></p></li>
+                        <li><p>Adding more hardware will not make thing go faster if you don't design for it properly, i.e. hardware is not magic.</p></li>
+                        <li><p>Your program runs with your processor idle most of the time does not mean you have the right to be sloppy.</p></li>
+                        <li><p>With speed comes agility.</p></li>
+                        <li><p>Last and most important, <strong>Performance ALWAYS matters</strong>.</p></li>
+                    </ul>
+                </section>
+                <hr />
+                <section>
+                    <p>Thank you for reading. Feel free to correct me if I am wrong or if you would like to point out something I might have missed by emailing me your comments and suggestions to <a class="underline" href="mailto:vivek@vivekroy.com">vivek@vivekroy.com</a>. See you later.</p>
+                </section>
+            </section>
+        </div>
+        <footer>
+            <p>Copyright. Vivek Roy. <br> 2018-19. All rights reserved.</p>
+        </footer>
+    </main>
+</body>
+{% endblock %}
