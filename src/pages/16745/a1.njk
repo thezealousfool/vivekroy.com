@@ -1,0 +1,66 @@
+{% extends 'layout_simple.njk' %}
+
+{% block title %}16745: Assignment-1{% endblock %}
+
+{% block headmeta %}
+    <link rel="stylesheet" href="/css/simple.css">
+    <meta name="description" content="Assignment submitted by Jianzhe Gu, Yiwei Lyu and Vivek Roy"/>
+    <meta property="og:title" content="16745: Assignment-1"/>
+    <meta property="og:url" content="https://vivekroy.com/16745/a1"/>
+    <meta property="og:description" content="Assignment submitted by Jianzhe Gu, Yiwei Lyu and Vivek Roy"/>
+    <script>MathJax = {tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]}};</script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+
+{% block content %}
+  <body>
+    <header>
+      <h1>16745: Assignment-1</h1>
+      <div class="authors">
+        <div>
+          <h3>Jianzhe Gu</h3>
+          <span>jianzheg@andrew.cmu.edu</span>
+        </div>
+        <div>
+          <h3>Yiwei Lyu</h3>
+          <span>yiweilyu@andrew.cmu.edu</span>
+        </div>
+        <div>
+          <h3>Vivek Roy</h3>
+          <span>vroy@andrew.cmu.edu</span>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section>
+        <p>Matlab code: <a href="/16745-a1.zip">zip</a></p>
+      </section>
+      <section>
+        <h1>Part 1: <span>Snake Robot</span></h1>
+        <p>
+        We made a snake robot with 3 links of customizable lengths and a target quaternion. This implies that we have 3 joints (the joint at the origin and the two joints between consecutive segments). We have limits on the minimum and maximum values of roll, pitch and yaw corresponding to every joint. The optimization is to use forward kinematics and reduce the Eucledian distance between the target quaternion and the tip (end of last link). We also consider obstacles in the 3D space which we want to avoid as well as stay away from the obstacles as much as possible. We thus frame the problem to have 2 hard constraints and 3 components to the loss function.
+        </p>
+        <p>
+        Hard constraints -
+        <ol>
+          <li>For each joint, the roll, pitch and yaw needs to respect the limit set on that joint as the minimum and maximum possible values.</li>
+          <li>Every link should avoid the obstacles, i.e. none of the links should be touching any of the obstacles.</li>
+        </ol>
+        </p>
+        <p>
+        The loss function has the following parts -
+        <ol>
+          <li>The distance between the tip of the snake and the target quaternion should be minimized.</li>
+          <li>The absolute difference of the joint angles from their limits is maximized.</li>
+          <li>The distance of the links from the obstacles should be maximized.</li>
+        </ol>
+        </p>
+        <p>
+        Mathematically -
+        $$ \min_{w, b, \xi} $$
+        </p>
+      </section>
+    </main>
+  </body>
+{% endblock %}
