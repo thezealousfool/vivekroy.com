@@ -106,6 +106,47 @@
           </li>
         </ol>
       </section>
+      <section>
+        <h1>Part 2</h1>
+        <p>In this part we pre-ialculate the gradient as input for &#8216;<em>fmincon</em>&#8217;. We first compute the symbolic expression of the loss. Then we take gradient of this loss with respect to Euler angles of all joints using Matlab&#8217;s built-in function &#8216;<em>gradient</em>&#8217;. After that, we use the built-in &#8216;</em>matlabFunction()</em>&#8217; to convert the symbolic expression to a Matlab function. It took 88s to finish the conversion for a 3-link system, but the optimization ran much faster than part 1 and required fewer iterations. However, when the number of links goes over 3, the conversion takes a very long time (&gt;15mins), so we directly use the symbolic expression of gradient for &#8216;<em>fmincon</em>&#8217; through substitution command &#8216;<em>subs</em>&#8217;. To speed up the substitution, we include &#8216;<em>digits(5)</em>&#8217; and &#8216;<em>vpa</em>()&#8217; to reduce precision. As a result, in the <a href="#table-part2">table below</a>, although computing gradient takes more time, optimizing with gradient requires fewer iterations and function evaluations.</p>
+        <table style="min-width:700px" id="table-part2">
+          <thead>
+            <tr>
+              <th># of Joints</th>
+              <th># of Iterations (without gradient)</th>
+              <th># of Objective Function Evaluation (without gradient)</th>
+              <th># of Iterations (with gradient)</th>
+              <th># of Objective Function Evaluation (with gradient)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3</td>
+              <td>88</td>
+              <td>901</td>
+              <td>11</td>
+              <td>159</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>92</td>
+              <td>1507</td>
+              <td>85</td>
+              <td>1493</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>94</td>
+              <td>2108</td>
+              <td>91</td>
+              <td>1887</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <p>We observe that the automatic &#8216;<em>gradient</em>&#8217; function sometimes complicates the gradient. Therefore, the future work of part 2 is to manually write the gradient for link position, link angle and obstacles. In that way, it would be faster to convert the symbolic expression into &#8216;<em>matlabFunction</em>&#8217; and optimization would be efficient.</p>
+      </section>
     </main>
   </body>
 {% endblock %}
