@@ -1,9 +1,9 @@
 @import 'fonts';
 
 body {
-  max-width: 1300px;
+  max-width: 1200px;
   margin: auto;
-  padding: 1em;
+  padding: 1.5em;
 }
 
 header {
@@ -41,4 +41,9 @@ main {
       font-weight: normal;
     }
   }
+}
+
+.svg {
+  display: flex;
+  justify-content: center;
 }
