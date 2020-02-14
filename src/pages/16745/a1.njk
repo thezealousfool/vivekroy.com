@@ -93,10 +93,10 @@
                 $$
               </li>
               <li>
-                From d we get the value of $p_{i,j}$
+                From $d_{i,j}$ we get the value of $p_{i,j}$ by comparing $d_{i,j}$ to the radius ($r_j$) of obstacle $o_j$
                 $$ p_{i,j} =
                 \begin{cases}
-                10^5 &amp; \text{if } d_{i,j} \lt R_j \\
+                10^5 &amp; \text{if } d_{i,j} \lt r_j \\
                 0 &amp; \text{otherwise}
                 \end{cases}
                 $$
@@ -108,7 +108,11 @@
           </li>
           <li>
             <strong>Discrete differentiable obstacle penalty</strong> ($\delta_{o^{&#8217;}}$):
-            <p>To make the obstacle constraint differentiable, we split the links into small segments and calculate the Euclidean distance between each segment and centres of every obstacle. We use a $sign$ function so that the optimizer does not penalize and push the links away even when the links are very close to the obstacles but not overlapping with any of them.</p>
+            <p>
+            To make the obstacle constraint differentiable, we split the links into small segments and calculate the Euclidean distance between each segment and centres of every obstacle. We use a $sign$ function so that the optimizer does not penalize and push the links away even when the links are very close to the obstacles but not overlapping with any of them.
+            Thus, the total penalty can be given by the sum over all small segment $s_i$ for every obstacle $o_j$ with radius $r_j$
+            $$ \delta_o = \sum_i \sum_j sign(r_j - || s_i - o_j ||_2) $$
+            </p>
           </li>
         </ol>
       </section>
