@@ -59,6 +59,8 @@ mjx-container {
 table {
  border: 1px solid #2d2d2d;
  border-collapse: collapse;
+ overflow: auto;
+
  thead {
    font-weight: 600;
    background-color: #EEE;
