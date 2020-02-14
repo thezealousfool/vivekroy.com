@@ -39,7 +39,8 @@
       <section>
         <h1>Overview</h1>
         <p>
-        We made a snake robot with 3 links of customizable lengths and a target point and quaternion. This implies that we have 3 joints (the joint at the origin and the two joints between consecutive segments). We have limits on the minimum and maximum values of roll, pitch and yaw corresponding to every joint. The optimization is to use forward kinematics and reduce the Eucledian distance between the target quaternion and the tip (end of last link). We also consider obstacles in the 3D space which we want to avoid as well as stay away from the obstacles as much as possible. We thus frame the problem using the following objective function &#8212;
+        We made a snake robot with $n$ links of customizable lengths and a target point and quaternion. This implies that we have $n$ joints (the joint at the origin and $n-1$ joints between consecutive segments). We have limits on the minimum and maximum values of roll, pitch and yaw corresponding to every joint. In optimization, we first did forward kinematics to get the positions and Euler angles of each joint, then try to minimize the Euclidean distance of both the position and quaternion between the end effector and the target. At the same time, we tried to keep the Euler angles away from the lower bounds and upper bounds. Furthermore, according to different optimization methods, we either used soft constraints or hard constraints to make sure that there is no collision between the links and the obstacles, and Euler angles of joints are always within the range. We thus frame the problem using the following objective function &#8212;
+
         $$ f_{obj} =
         \begin{cases}
         \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} + \omega_4 . \delta_{o} &amp; \text{if &#8216;trust-region-reflective&#8217;} \\
@@ -111,6 +112,36 @@
         </ol>
       </section>
       <section>
+        <h1>Part 1</h1>
+        <p>Results of part 1 can be seen in the <a href="#figure-part1">figure below</a>. The black segments represent the links. Green balls are the obstacles with specific radii. A small black ball indicates the target position and the green line connected to the target shows the target quaternion angle. The links are expected to reach the target ball from the green line direction without touching any green balls and keep away from minimum and maximum joint angles.</p>
+        <div id="figure-part1" style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/3-part1.gif" alt="" style="width: 100%">
+            <span>3-links, Numerical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/3-part2.gif" alt="" style="width: 100%">
+            <span>3-links, Analytical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/5-part1.gif" alt="" style="width: 100%">
+            <span>5-links, Numerical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/5-link-part2.gif" alt="" style="width: 100%">
+            <span>5-links, Analytical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/7-part1.gif" alt="" style="width: 100%">
+            <span>7-links, Numerical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/7-part2.gif" alt="" style="width: 100%">
+            <span>7-links, Analytical</span>
+          </div>
+        </div>
+      </section>
+      <section>
         <h1>Part 2</h1>
         <p>In this part we pre-calculate the gradient as input for &#8216;<em>fmincon</em>&#8217;. We first compute the symbolic expression of the loss. Then we take gradient of this loss with respect to Euler angles of all joints using Matlab&#8217;s built-in function &#8216;<em>gradient</em>&#8217;. After that, we use the built-in &#8216;</em>matlabFunction()</em>&#8217; to convert the symbolic expression to a Matlab function. It took 88s to finish the conversion for a 3-link system, but the optimization ran much faster than part 1 and required fewer iterations. However, when the number of links goes over 3, the conversion takes a very long time (&gt;15mins), so we directly use the symbolic expression of gradient for &#8216;<em>fmincon</em>&#8217; through substitution command &#8216;<em>subs</em>&#8217;. To speed up the substitution, we include &#8216;<em>digits(5)</em>&#8217; and &#8216;<em>vpa</em>()&#8217; to reduce precision. As a result, in the <a href="#table-part2">table below</a>, although computing gradient takes more time, optimizing with gradient requires fewer iterations and function evaluations.</p>
         <table style="min-width:700px" id="table-part2">
@@ -147,39 +178,13 @@
             </tr>
           </tbody>
         </table>
-        <div style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
-          <div style="flex-basis: 300px; margin: 1em;">
-            <img src="/img/3-part1.gif" alt="" style="width: 100%">
-            <span>Fig.: 3-links, Numerical</span>
-          </div>
-          <div style="flex-basis: 300px; margin: 1em;">
-            <img src="/img/3-part2.gif" alt="" style="width: 100%">
-            <span>Fig.: 3-links, Analytical</span>
-          </div>
-          <div style="flex-basis: 300px; margin: 1em;">
-            <img src="/img/5-part1.gif" alt="" style="width: 100%">
-            <span>Fig.: 5-links, Numerical</span>
-          </div>
-          <div style="flex-basis: 300px; margin: 1em;">
-            <img src="/img/5-link-part2.gif" alt="" style="width: 100%">
-            <span>Fig.: 5-links, Analytical</span>
-          </div>
-          <div style="flex-basis: 300px; margin: 1em;">
-            <img src="/img/7-part1.gif" alt="" style="width: 100%">
-            <span>Fig.: 7-links, Numerical</span>
-          </div>
-          <div style="flex-basis: 300px; margin: 1em;">
-            <img src="/img/7-part2.gif" alt="" style="width: 100%">
-            <span>Fig.: 7-links, Analytical</span>
-          </div>
-        </div>
       </section>
       <section>
         <h1>Part 3</h1>
         <p>In part 3, we tried to use and compare different built-in optimization methods including &#8216;interior-point&#8217;, &#8216;sqp&#8217;, &#8216;active-set&#8217; and &#8216;trust-region-reflective&#8217;, as well as &#8216;CMA-ES&#8217; from <a href="https://www.mathworks.com/matlabcentral/fileexchange/52898-cma-es-in-matlab">here</a>.</p>
         <p>For &#8216;interior-point&#8217;, &#8216;sqp&#8217; and &#8216;active-set&#8217;, we kept using the configurations in part 1 and change the algorithm option in &#8216;optimoptions&#8217;. For &#8216;trust-region-reflective&#8217; method, we use the gradient calculating method in part 2. For both &#8216;trust-region-reflective&#8217; and &#8216;CMA-ES&#8217;, hard constraints are not allowed, so we used soft constraints for these two methods. The objective function with soft constraint is shown in the overview section.</p>
-        <p>In experiments, all the algorithms did not break the constraints. Based on our observation, &#8216;trust-region-reflective&#8217; requires fewest iterations and gives the best result, but it needs precomputed gradient. &#8216;sqp&#8217; and &#8216;active-set&#8217; have similar performance and require fewer iterations and function evaluations than &#8216;Interior-point&#8217;. &#8216;Interior-point&#8217; requires most iterations and sometimes cannot converge. &#8216;CMA-ES&#8217; is giving constant results regardless of the initial point, but the quality of the result is worse than the others. The position and the quaternion of the end effector always have a small but obvious deviation from the target.</p>
-        <table style="min-width:700px" id="table-part2">
+        <p>In experiments (<a href="table-part3">table</a>), all the algorithms did not break the constraints. Based on our observation, &#8216;trust-region-reflective&#8217; requires fewest iterations and gives the best result, but it needs precomputed gradient. &#8216;sqp&#8217; and &#8216;active-set&#8217; have similar performance and require fewer iterations and function evaluations than &#8216;Interior-point&#8217;. &#8216;Interior-point&#8217; requires most iterations and sometimes cannot converge. &#8216;CMA-ES&#8217; is giving constant results regardless of the initial point, but the quality of the result is worse than the others (<a href="figure-part3">figure</a>). The position and the quaternion of the end effector always have a small but obvious deviation from the target.</p>
+        <table style="min-width:700px" id="table-part3">
           <thead>
             <tr>
               <th></th>
@@ -217,54 +222,57 @@
             </tr>
           </tbody>
         </table>
-        <div style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
+        <div id="figure-part3" style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
           <div style="flex-basis: 300px; margin: 1em;">
             <img src="/img/interior-point.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>interior-point</span>
           </div>
           <div style="flex-basis: 300px; margin: 1em;">
             <img src="/img/sqp.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>sqp</span>
           </div>
           <div style="flex-basis: 300px; margin: 1em;">
             <img src="/img/active_set.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>active-set</span>
           </div>
           <div style="flex-basis: 300px; margin: 1em;">
             <img src="/img/trust-region-reflective.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>trust-region-reflective</span>
           </div>
           <div style="flex-basis: 300px; margin: 1em;">
             <img src="/img/cmaes.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>CMA-ES</span>
           </div>
         </div>
       </section>
       <section>
         <h1>Part 4</h1>
-        <p>In part 4, we use &#8216;sqp&#8217; and &#8216;active-set&#8217; to randomly sampled a certain number (by default 15) of initial Euler angles between lower bounds and upper bounds. After collecting 15 solutions, we computed the Euclidean distance between them and pick the 4 solutions with the largest average distance between each other. As figure foo shows, a 5-link system can reach the target without touching constraints in visually different ways.</p>
-        <div style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
-          <div style="flex-basis: 300px; margin: 1em;">
+        <p>In part 4, we use &#8216;sqp&#8217; and &#8216;active-set&#8217; to randomly sampled a certain number (by default 15) of initial Euler angles between lower bounds and upper bounds. After collecting 15 solutions, we computed the Euclidean distance between them and pick the 4 solutions with the largest average distance between each other. As <a href="#figure-part4">figure below</a> shows, a 5-link system can reach the target without touching constraints in visually different ways.</p>
+        <div id="figure-part4" style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
+          <div style="flex-basis: 250px; margin: 1em;">
             <img src="/img/part4-sqp-1.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>Initialization 1</span>
           </div>
-          <div style="flex-basis: 300px; margin: 1em;">
+          <div style="flex-basis: 250px; margin: 1em;">
             <img src="/img/part4-sqp-2.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>Initialization 2</span>
           </div>
-          <div style="flex-basis: 300px; margin: 1em;">
+          <div style="flex-basis: 250px; margin: 1em;">
             <img src="/img/part4-sqp-3.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>Initialization 3</span>
           </div>
-          <div style="flex-basis: 300px; margin: 1em;">
+          <div style="flex-basis: 250px; margin: 1em;">
             <img src="/img/part4-sqp-4.gif" alt="" style="width: 100%">
-            <span>C1</span>
+            <span>Initialization 4</span>
           </div>
         </div>
       </section>
       <section>
         <h1>Discussion</h1>
-        <p>We observe that the automatic &#8216;<em>gradient</em>&#8217; function sometimes complicates the gradient. Therefore, the future work of part 2 is to manually write the gradient for link position, link angle and obstacles. In that way, it would be faster to convert the symbolic expression into &#8216;<em>matlabFunction</em>&#8217; and optimization would be efficient.</p>
+        <p>We observe that the automatic ‘gradient’ function usually complicates the gradient. On the contrary, manually writing gradient would be more efficient for converting the expression to MatlabFunction. Therefore, our future work of part 2 is to manually write the gradient for link position, link angle, and obstacles. In that way, optimization would be faster and more efficient.</p>
+        <p>In part 2, we saw that methods with gradient require fewer iterations and have better convergence. However, the cost of the gradient is the pre-computing time or the effort of manually computing for the gradient. We need to consider the trade-off between the pre-computing time and the number of iterations.</p>
+        <p>CMA-ES is iterated based on population and updating the distribution. It is less likely to be trapped in local minima and always having consistent results. But it is also hard to find a global minimum with high precision. In the future, we can try to use CMA-ES to generate an initial guess, and then use other methods to improve the result on top of CMA-ES. On the other hand, methods that are not based on population have a higher chance to be trapped in local minima. Therefore, it would be effective to pick a best solution from multiple solutions with different initial points.</p>
+        <p>To increase the generality of the problem, we recommend using soft constraints with differentiability. This enables more optimization methods including both derivative-based and derivative-free methods, and methods cannot satisfy hard constraints. However, hard constraint usually provides a sharper boundary for the solution, while soft constraint might push the solution away from the constraints even when the constraints are not violated, which causes a sacrificing of the potential solutions.</p>
       </section>
     </main>
   </body>
