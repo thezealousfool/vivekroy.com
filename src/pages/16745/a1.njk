@@ -42,10 +42,11 @@
         We made a snake robot with 3 links of customizable lengths and a target point and quaternion. This implies that we have 3 joints (the joint at the origin and the two joints between consecutive segments). We have limits on the minimum and maximum values of roll, pitch and yaw corresponding to every joint. The optimization is to use forward kinematics and reduce the Eucledian distance between the target quaternion and the tip (end of last link). We also consider obstacles in the 3D space which we want to avoid as well as stay away from the obstacles as much as possible. We thus frame the problem using the following objective function &#8212;
         $$ f_{obj} =
         \begin{cases}
-        \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} + \omega_4 . \delta_{o} &amp; \text{if &#8216;trust-region-reflective'} \\
+        \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} + \omega_4 . \delta_{o} &amp; \text{if &#8216;trust-region-reflective&#8217;} \\
+        \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} + \omega_4 . \delta_{o^{&#8217;}} &amp; \text{if &#8216;CMA-ES&#8217;} \\
         \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} &amp; \text{otherwise}
         \end{cases}$$
-        where $\omega_1$, $\omega_2$, $\omega_3$ and $\omega_4$ are the different weights assigned to each objective component signalling the importance of each component towards the final goal. The different $\Delta$s are explained below. If the mode is not trust-region-reflective, we use $\delta_o$ as a hard constraint, i.e. $\omega_4$ is a very large value.
+        where $\omega_1$, $\omega_2$, $\omega_3$ and $\omega_4$ are the different weights assigned to each objective component signalling the importance of each component towards the final goal. The different $\Delta$s are explained below. If the mode is not trust-region-reflective, we use $\delta_o$ as a hard constraint, which is equivalent to setting the value of $\omega_4$ to a very large value.
         </p>
         <ol>
           <li>
@@ -71,7 +72,7 @@
           </li>
           <li>
             <p>
-            <strong>Obstacle penalty </strong>($\delta_{o}$): For each obstacle $o_j$ with radius $R_j$ and link $l_i$, we calculate a penalty $p_{i,j}$ by the following steps &#8212;
+            <strong>Differentiable obstacle penalty </strong>($\delta_{o}$): For each obstacle $o_j$ with radius $R_j$ and link $l_i$, we calculate a penalty $p_{i,j}$ by the following steps &#8212;
             <div class="svg">
               <img src="/img/16745_a1_diag.png" alt="Obstacles diagram">
             </div>
@@ -104,11 +105,14 @@
             $$ \delta_o = \sum_i \sum_j p_{i,j} $$
             </p>
           </li>
+          <li>
+            <strong>Discrete obstacle penalty</strong> ($\delta_{o^{&#8217;}}$):
+          </li>
         </ol>
       </section>
       <section>
         <h1>Part 2</h1>
-        <p>In this part we pre-ialculate the gradient as input for &#8216;<em>fmincon</em>&#8217;. We first compute the symbolic expression of the loss. Then we take gradient of this loss with respect to Euler angles of all joints using Matlab&#8217;s built-in function &#8216;<em>gradient</em>&#8217;. After that, we use the built-in &#8216;</em>matlabFunction()</em>&#8217; to convert the symbolic expression to a Matlab function. It took 88s to finish the conversion for a 3-link system, but the optimization ran much faster than part 1 and required fewer iterations. However, when the number of links goes over 3, the conversion takes a very long time (&gt;15mins), so we directly use the symbolic expression of gradient for &#8216;<em>fmincon</em>&#8217; through substitution command &#8216;<em>subs</em>&#8217;. To speed up the substitution, we include &#8216;<em>digits(5)</em>&#8217; and &#8216;<em>vpa</em>()&#8217; to reduce precision. As a result, in the <a href="#table-part2">table below</a>, although computing gradient takes more time, optimizing with gradient requires fewer iterations and function evaluations.</p>
+        <p>In this part we pre-calculate the gradient as input for &#8216;<em>fmincon</em>&#8217;. We first compute the symbolic expression of the loss. Then we take gradient of this loss with respect to Euler angles of all joints using Matlab&#8217;s built-in function &#8216;<em>gradient</em>&#8217;. After that, we use the built-in &#8216;</em>matlabFunction()</em>&#8217; to convert the symbolic expression to a Matlab function. It took 88s to finish the conversion for a 3-link system, but the optimization ran much faster than part 1 and required fewer iterations. However, when the number of links goes over 3, the conversion takes a very long time (&gt;15mins), so we directly use the symbolic expression of gradient for &#8216;<em>fmincon</em>&#8217; through substitution command &#8216;<em>subs</em>&#8217;. To speed up the substitution, we include &#8216;<em>digits(5)</em>&#8217; and &#8216;<em>vpa</em>()&#8217; to reduce precision. As a result, in the <a href="#table-part2">table below</a>, although computing gradient takes more time, optimizing with gradient requires fewer iterations and function evaluations.</p>
         <table style="min-width:700px" id="table-part2">
           <thead>
             <tr>
@@ -143,8 +147,123 @@
             </tr>
           </tbody>
         </table>
+        <div style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/3-part1.gif" alt="" style="width: 100%">
+            <span>Fig.: 3-links, Numerical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/3-part2.gif" alt="" style="width: 100%">
+            <span>Fig.: 3-links, Analytical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/5-part1.gif" alt="" style="width: 100%">
+            <span>Fig.: 5-links, Numerical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/5-link-part2.gif" alt="" style="width: 100%">
+            <span>Fig.: 5-links, Analytical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/7-part1.gif" alt="" style="width: 100%">
+            <span>Fig.: 7-links, Numerical</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/7-part2.gif" alt="" style="width: 100%">
+            <span>Fig.: 7-links, Analytical</span>
+          </div>
+        </div>
       </section>
       <section>
+        <h1>Part 3</h1>
+        <p>In part 3, we tried to use and compare different built-in optimization methods including &#8216;interior-point&#8217;, &#8216;sqp&#8217;, &#8216;active-set&#8217; and &#8216;trust-region-reflective&#8217;, as well as &#8216;CMA-ES&#8217; from <a href="https://www.mathworks.com/matlabcentral/fileexchange/52898-cma-es-in-matlab">here</a>.</p>
+        <p>For &#8216;interior-point&#8217;, &#8216;sqp&#8217; and &#8216;active-set&#8217;, we kept using the configurations in part 1 and change the algorithm option in &#8216;optimoptions&#8217;. For &#8216;trust-region-reflective&#8217; method, we use the gradient calculating method in part 2. For both &#8216;trust-region-reflective&#8217; and &#8216;CMA-ES&#8217;, hard constraints are not allowed, so we used soft constraints for these two methods. The objective function with soft constraint is shown in the overview section.</p>
+        <p>In experiments, all the algorithms did not break the constraints. Based on our observation, &#8216;trust-region-reflective&#8217; requires fewest iterations and gives the best result, but it needs precomputed gradient. &#8216;sqp&#8217; and &#8216;active-set&#8217; have similar performance and require fewer iterations and function evaluations than &#8216;Interior-point&#8217;. &#8216;Interior-point&#8217; requires most iterations and sometimes cannot converge. &#8216;CMA-ES&#8217; is giving constant results regardless of the initial point, but the quality of the result is worse than the others. The position and the quaternion of the end effector always have a small but obvious deviation from the target.</p>
+        <table style="min-width:700px" id="table-part2">
+          <thead>
+            <tr>
+              <th></th>
+              <th>interior-point</th>
+              <th>sqp</th>
+              <th>active-set</th>
+              <th>trust-region-reflective</th>
+              <th>CMA-ES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td># of iteration</td>
+              <td>180</td>
+              <td>91</td>
+              <td>92</td>
+              <td>65</td>
+              <td>1300</td>
+            </tr>
+            <tr>
+              <td># of evals</td>
+              <td>2980</td>
+              <td>1502</td>
+              <td>1515</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>Fval</td>
+              <td>5.42e<sup>-3</sup></td>
+              <td>6.16e<sup>-3</sup></td>
+              <td>6.90e<sup>-3</sup></td>
+              <td>5.33e<sup>-3</sup></td>
+              <td>1.28e<sup>-2</sup></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/interior-point.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/sqp.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/active_set.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/trust-region-reflective.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/cmaes.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h1>Part 4</h1>
+        <p>In part 4, we use &#8216;sqp&#8217; and &#8216;active-set&#8217; to randomly sampled a certain number (by default 15) of initial Euler angles between lower bounds and upper bounds. After collecting 15 solutions, we computed the Euclidean distance between them and pick the 4 solutions with the largest average distance between each other. As figure foo shows, a 5-link system can reach the target without touching constraints in visually different ways.</p>
+        <div style="display: flex; justify-content: space-around; align-items: stretch; flex-wrap: wrap;">
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/part4-sqp-1.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/part4-sqp-2.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/part4-sqp-3.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+          <div style="flex-basis: 300px; margin: 1em;">
+            <img src="/img/part4-sqp-4.gif" alt="" style="width: 100%">
+            <span>C1</span>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h1>Discussion</h1>
         <p>We observe that the automatic &#8216;<em>gradient</em>&#8217; function sometimes complicates the gradient. Therefore, the future work of part 2 is to manually write the gradient for link position, link angle and obstacles. In that way, it would be faster to convert the symbolic expression into &#8216;<em>matlabFunction</em>&#8217; and optimization would be efficient.</p>
       </section>
     </main>
