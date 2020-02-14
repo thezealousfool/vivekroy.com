@@ -40,28 +40,28 @@
         <h1>Part 1: <span>Snake Robot</span></h1>
         <p>
         We made a snake robot with 3 links of customizable lengths and a target point and quaternion. This implies that we have 3 joints (the joint at the origin and the two joints between consecutive segments). We have limits on the minimum and maximum values of roll, pitch and yaw corresponding to every joint. The optimization is to use forward kinematics and reduce the Eucledian distance between the target quaternion and the tip (end of last link). We also consider obstacles in the 3D space which we want to avoid as well as stay away from the obstacles as much as possible. We thus frame the problem using the following objective function -
-        $$ f_{obj} = \omega_1 . \delta_{position} + \omega_2 . \delta_{angle} + \omega_3 . \delta_{joints} + \omega_4 . \delta_{obstacles} $$
+        $$ f_{obj} = \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} + \omega_4 . \delta_{o} $$
         where $\omega_1$, $\omega_2$, $\omega_3$ and $\omega_4$ are the different weights assigned to each objective component signalling the importance of each component towards the final goal. The different $\Delta$s are explained below.
         </p>
         <ol>
           <li>
             <p>
-            <strong>Position deviation </strong>($\delta_{position}$): This terms represents the distance/deviation of the tip of the snake (end of last link) from the target point.
-            $$ \delta_{position} = ||\mathbb P_{target} - \mathbb P_{tip}||_2 $$
+            <strong>Position deviation </strong>($\delta_{p}$): This terms represents the distance/deviation of the tip of the snake (end of last link) from the target point.
+            $$ \delta_{p} = ||\mathbb P_{target} - \mathbb P_{tip}||_2 $$
             </p>
           </li>
           <li>
             <p>
-            <strong>Angle deviation </strong>($\delta_{angle}$): This term represents the angle deviation of the quaternion of the end of last link and the target quaternion.
-            $$ \delta_{angle} = ||\mathbb H_{target} - \mathbb H_{tip}||_2 $$
+            <strong>Angle deviation </strong>($\delta_{a}$): This term represents the angle deviation of the quaternion of the end of last link and the target quaternion.
+            $$ \delta_{a} = ||\mathbb H_{target} - \mathbb H_{tip}||_2 $$
             </p>
           </li>
           <li>
             <p>
-            <strong>Joint deviation </strong>($\delta_{joints}$): At each joint we calculate the joint loss at that point as the sum of reciprocals of the deviation of relevant angles at that joint from the upper and lower bound of those angles at that joint.
+            <strong>Joint deviation </strong>($\delta_{j}$): At each joint we calculate the joint loss at that point as the sum of reciprocals of the deviation of relevant angles at that joint from the upper and lower bound of those angles at that joint.
             $$ l_i = \frac{1}{(\theta_i - \theta_i^{lower})^2} + \frac{1}{(\theta_i - \theta_i^{upper})^2}$$
             Where $l_i$ is the deviation at joint $i$, $\theta_i$ represents the relevant angles at that moment in the optimization procedure and $\theta_i^{lower}$, $\theta_i^{upper}$ represent the lower and upper bound on the angles defined by the problem respectively.
-            $$ \delta_{joints} = \sum_i l_i $$
+            $$ \delta_{j} = \sum_i l_i $$
             The total joint deviation is the sum of joint loss at every joint $i$.
             </p>
           </li>
