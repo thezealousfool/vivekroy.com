@@ -46,6 +46,10 @@ main {
 .svg {
   display: flex;
   justify-content: center;
+  img {
+    width: 90%;
+    max-width: 600px;
+  }
 }
 
 mjx-container {
