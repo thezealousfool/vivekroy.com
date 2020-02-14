@@ -47,7 +47,7 @@
         \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} + \omega_4 . \delta_{o^{&#8217;}} &amp; \text{if &#8216;CMA-ES&#8217;} \\
         \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} &amp; \text{otherwise}
         \end{cases}$$
-        where $\omega_1$, $\omega_2$, $\omega_3$ and $\omega_4$ are the different weights assigned to each objective component signalling the importance of each component towards the final goal. The different $\Delta$s are explained below. If the mode is not trust-region-reflective, we use $\delta_o$ as a hard constraint, which is equivalent to setting the value of $\omega_4$ to a very large value.
+        where $\omega_1$, $\omega_2$, $\omega_3$ and $\omega_4$ are the different weights assigned to each objective component signalling the importance of each component towards the final goal. The different $\delta$s are explained below. If the mode is not trust-region-reflective, we use $\delta_o$ as a hard constraint, which is equivalent to setting the value of $\omega_4$ to a very large value. For CMA-ES, in a similar fashion, we use a hard constraint for the obstacles but to make it differentiable we use a different formulation denoted by $\delta_{o^{&#8217;}}$
         </p>
         <ol>
           <li>
@@ -73,7 +73,7 @@
           </li>
           <li>
             <p>
-            <strong>Differentiable obstacle penalty </strong>($\delta_{o}$): For each obstacle $o_j$ with radius $R_j$ and link $l_i$, we calculate a penalty $p_{i,j}$ by the following steps &#8212;
+            <strong>Continuous non-differentiable obstacle penalty </strong>($\delta_{o}$): For each obstacle $o_j$ with radius $R_j$ and link $l_i$, we calculate a penalty $p_{i,j}$ by the following steps &#8212;
             <div class="svg">
               <img src="/img/16745_a1_diag.png" alt="Obstacles diagram">
             </div>
@@ -107,7 +107,8 @@
             </p>
           </li>
           <li>
-            <strong>Discrete obstacle penalty</strong> ($\delta_{o^{&#8217;}}$):
+            <strong>Discrete differentiable obstacle penalty</strong> ($\delta_{o^{&#8217;}}$):
+            <p>To make the obstacle constraint differentiable, we split the links into small segments and calculate the Euclidean distance between each segment and centres of every obstacle. We use a $sign$ function so that the optimizer does not penalize and push the links away even when the links are very close to the obstacles but not overlapping with any of them.</p>
           </li>
         </ol>
       </section>
@@ -182,7 +183,7 @@
       <section>
         <h1>Part 3</h1>
         <p>In part 3, we tried to use and compare different built-in optimization methods including &#8216;interior-point&#8217;, &#8216;sqp&#8217;, &#8216;active-set&#8217; and &#8216;trust-region-reflective&#8217;, as well as &#8216;CMA-ES&#8217; from <a href="https://www.mathworks.com/matlabcentral/fileexchange/52898-cma-es-in-matlab">here</a>.</p>
-        <p>For &#8216;interior-point&#8217;, &#8216;sqp&#8217; and &#8216;active-set&#8217;, we kept using the configurations in part 1 and change the algorithm option in &#8216;optimoptions&#8217;. For &#8216;trust-region-reflective&#8217; method, we use the gradient calculating method in part 2. For both &#8216;trust-region-reflective&#8217; and &#8216;CMA-ES&#8217;, hard constraints are not allowed, so we used soft constraints for these two methods. The objective function with soft constraint is shown in the overview section.</p>
+        <p>For &#8216;interior-point&#8217;, &#8216;sqp&#8217; and &#8216;active-set&#8217;, we kept using the configurations in part 1 and change the algorithm option in &#8216;optimoptions&#8217;. For &#8216;trust-region-reflective&#8217; method, we use the gradient calculating method in part 2. For both &#8216;trust-region-reflective&#8217; and &#8216;CMA-ES&#8217;, hard constraints are not allowed, so we used soft constraints for these two methods. Since “CMA-ES” is derivative-free, we use the continuous non-differentiable way to describe the distance to the obstacle. For “trust-region-reflective”, we split the links into discrete elements and used “sign” function to calculate the soft penalty. The details of objective functions are shown in the overview section.</p>
         <p>In experiments (<a href="table-part3">table</a>), all the algorithms did not break the constraints. Based on our observation, &#8216;trust-region-reflective&#8217; requires fewest iterations and gives the best result, but it needs precomputed gradient. &#8216;sqp&#8217; and &#8216;active-set&#8217; have similar performance and require fewer iterations and function evaluations than &#8216;Interior-point&#8217;. &#8216;Interior-point&#8217; requires most iterations and sometimes cannot converge. &#8216;CMA-ES&#8217; is giving constant results regardless of the initial point, but the quality of the result is worse than the others (<a href="figure-part3">figure</a>). The position and the quaternion of the end effector always have a small but obvious deviation from the target.</p>
         <table style="min-width:700px" id="table-part3">
           <thead>
