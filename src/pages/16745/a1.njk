@@ -39,9 +39,13 @@
       <section>
         <h1>Part 1: <span>Snake Robot</span></h1>
         <p>
-        We made a snake robot with 3 links of customizable lengths and a target point and quaternion. This implies that we have 3 joints (the joint at the origin and the two joints between consecutive segments). We have limits on the minimum and maximum values of roll, pitch and yaw corresponding to every joint. The optimization is to use forward kinematics and reduce the Eucledian distance between the target quaternion and the tip (end of last link). We also consider obstacles in the 3D space which we want to avoid as well as stay away from the obstacles as much as possible. We thus frame the problem using the following objective function -
-        $$ f_{obj} = \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} + \omega_4 . \delta_{o} $$
-        where $\omega_1$, $\omega_2$, $\omega_3$ and $\omega_4$ are the different weights assigned to each objective component signalling the importance of each component towards the final goal. The different $\Delta$s are explained below.
+        We made a snake robot with 3 links of customizable lengths and a target point and quaternion. This implies that we have 3 joints (the joint at the origin and the two joints between consecutive segments). We have limits on the minimum and maximum values of roll, pitch and yaw corresponding to every joint. The optimization is to use forward kinematics and reduce the Eucledian distance between the target quaternion and the tip (end of last link). We also consider obstacles in the 3D space which we want to avoid as well as stay away from the obstacles as much as possible. We thus frame the problem using the following objective function &#8212;
+        $$ f_{obj} =
+        \begin{cases}
+        \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} + \omega_4 . \delta_{o} &amp; \text{if &#8216;trust-region-reflective'} \\
+        \omega_1 . \delta_{p} + \omega_2 . \delta_{a} + \omega_3 . \delta_{j} &amp; \text{otherwise}
+        \end{cases}$$
+        where $\omega_1$, $\omega_2$, $\omega_3$ and $\omega_4$ are the different weights assigned to each objective component signalling the importance of each component towards the final goal. The different $\Delta$s are explained below. If the mode is not trust-region-reflective, we use $\delta_o$ as a hard constraint, i.e. $\omega_4$ is a very large value.
         </p>
         <ol>
           <li>
@@ -63,6 +67,38 @@
             Where $l_i$ is the deviation at joint $i$, $\theta_i$ represents the relevant angles at that moment in the optimization procedure and $\theta_i^{lower}$, $\theta_i^{upper}$ represent the lower and upper bound on the angles defined by the problem respectively.
             $$ \delta_{j} = \sum_i l_i $$
             The total joint deviation is the sum of joint loss at every joint $i$.
+            </p>
+          </li>
+          <li>
+            <p>
+            <strong>Obstacle penalty </strong>($\delta_{o}$): For each obstacle $o_j$ with radius $R_j$ and link $l_i$, we calculate a penalty $p_{i,j}$ by the following steps &#8212;
+            <ol type="a">
+              <li>
+                We calculate $t$ to check on which side of the sphere the line segment is on.
+                $$ t_{i,j} = \frac{\vec{J_1O} . \vec{J_1J_2}}{|\vec{J_1J_2}|^2}$$
+              </li>
+              <li>
+                We find the shortest distance between the center of the sphere and the line segment as
+                $$ d_{i,j} =
+                \begin{cases}
+                |\vec{J_1O}| &amp; \text{if } t_{i,j} \lt 0 \\
+                |\vec{J_2O}| &amp; \text{if } t_{i,j} \gt 1 \\
+                ||t_{i,j}.\vec{J_1J_2} + \vec{J_1} - \vec{O}||_2 &amp; \text{otherwise}
+                \end{cases}
+                $$
+              </li>
+              <li>
+                From d we get the value of $p_{i,j}$
+                $$ p_{i,j} =
+                \begin{cases}
+                10^5 &amp; \text{if } d_{i,j} \lt R_j \\
+                0 &amp; \text{otherwise}
+                \end{cases}
+                $$
+              </li>
+            </ol>
+            The value of $\delta_o$ can now be calculated as the sum of penalties over all links and all obstacles &#8212;
+            $$ \delta_o = \sum_i \sum_j p_{i,j} $$
             </p>
           </li>
         </ol>
