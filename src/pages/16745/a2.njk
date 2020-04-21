@@ -114,18 +114,30 @@
       <section>
         <h1>Phase 2 - Control</h1>
         <h2>Step 1: Speed Profiling</h2>
-        <p>Given an intrinsic curve $c(s)$ derived in the previous section, we aim to generate control commands which satisfy the dynamic feasibility and given constraints. We take first and second derivatives from the planned path, and get velocity and acceleration.</p>
         <img style="width: 100%; height: 400px; object-fit: contain;" src="/img/car_diag.png" alt="car turning acceleration model">
+        <p>Given an intrinsic curve $c(s)$ derived in the previous section, we aim to generate control commands which satisfy the dynamic feasibility and given constraints. We take first and second derivatives from the planned path, and get velocity and acceleration.</p>
         <p>
-          We simplify the car model to the chassis and compute the largest centripetal acceleration based on the height and width of the chassis. Based on the relationship between centripetal acceleration, radius and velocity,
-        </p>
         $$ v(s) \leq \sqrt{\dfrac{g.w.R(s)}{l}} $$
         $$ R(s) = \dfrac{1}{k(s)} = \dfrac{1}{\sqrt{x''(s)^2 + y''(s)^2}} $$
         $$ v(s) \leq \sqrt{ \dfrac{g.w}{l.\sqrt{x''(s)^2 + y''(s)^2}} } $$
-        <p>
-          As we can calculate the radius at any given $s$, we can have the maximum velocity at any given $s$ on the trajectory.
+          We simplify the car model to the chassis and compute the largest centripetal acceleration based on the height and width of the chassis. Based on the relationship between centripetal acceleration, radius and velocity,
         </p>
+        <p>
+        As we can calculate the radius at any given $s$, we can have the maximum velocity at any given $s$ on the trajectory. We will have $s \implies curvature$, then get $s \implies V_{max}$. We integrate the velocity from $t = 0$, $v = V_0$, thus getting the mapping $t \implies s$.
+        </p>
+        <img style="width: 100%; height: 400px; object-fit: contain;" src="/img/velocity.png" alt="">
+        <p>Thus we have an $s$ - $V_{max}$ profile(fig xx). For example, for a given trajectory in fig xx (a), we will have the s - Vmax profile as fig xx (b). The goal for speed profiling is to get a trajectory in s - V profile(blue trajectory in fig xx (b)) that meets the following constraints:</p>
+        <ol>
+          <li>velocity constraint 1, for any s, $v(s) \leq V_{max}(s)$</li>
+          <li>the beginning velocity equals to the current velocity v(0), and the velocity at the next waypoint (we set a small value v_way = 1)</li>
+          <li>$a(s) \leq a_{max}$, specifically, in s-Vmax profile, $a = \frac{dv}{ds} * v \leq a_{max}$.</li>
+        </ol>
+        <p>The goal for the optimization is to maximize the accumulated velocity, $$\int_{s_0}^{s_{end}} v(s).ds$$</p>
         <h2>Step 2: Convert trajectory to control commands</h2>
+        $$ \dfrac{dx}{dt} = v cos(\theta) $$
+        $$ \dfrac{dy}{dt} = v sin(\theta) $$
+        $$ \dfrac{d\theta}{dt} = \dfrac{v}{L} tan(\phi) $$
+        $$ \dfrac{dv}{dt} = a_v $$
       </section>
       <section>
         <h1>Discussion</h1>
