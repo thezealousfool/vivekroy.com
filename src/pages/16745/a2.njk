@@ -71,10 +71,12 @@
         <p>
           One drawback of this method that we noticed was that it does not consider the radius of curvature constraints and as a result ends up violating the maximum centrifugal force limit and leads to the unrecoverable toppling of the vehicle. Sometimes the vehicle slowly orbits around the waypoint for several rounds before it is able to meet the heading constraints of the waypoint. Our understanding of this is that it has got to do with the maximum allowed steering angle by the physics engine used.
         </p>
-        <video controls>
-          <source src="/quintic.mp4" type="video/mp4">
-          Your browser does not support video playback
-        </video>
+        <div style="display: flex; justify-content: center;">
+          <video controls>
+            <source src="/quintic.mp4" type="video/mp4">
+            Your browser does not support video playback
+          </video>
+        </div>
         <h2>Piecewise Intrinsic Spline</h2>
         <p>
         We choose the piecewise intrinsic spline method proposed in <a href="https://www.ri.cmu.edu/pub_files/pub3/delingette_h_1991_1/delingette_h_1991_1.pdf" target="blank">[2]</a> as the second approach. In the second approach, we formalize the problem into finding the shortest spline that abides by the constraints. Specifically, the spline should meet the following requirements:
@@ -89,6 +91,7 @@
         <p>
           In order to find the shortest path meeting the above mentioned requirements, we begin with one piece of Cubic Bezier Curve with optimized control points. In order to do that, we start with setting the control points to be in the direction of the heading in the two ends of the path and then optimize the length of the control vectors. We formulate this optimization as the minimization of the maximum radius of curvature of the spline.
         </p>
+        <img style="width: 100%; height: 400px; object-fit:contain;" src="/img/spline.png" alt="Spline radius of curvature adjustment">
         <p>
           Once we have the optimal control points, we check if at any point in the spline, the radius of curvature does not meet the hard constraint given in the problem statement. If so, we use the method proposed in <a href="https://www.ri.cmu.edu/pub_files/pub3/delingette_h_1991_1/delingette_h_1991_1.pdf" target="blank">[2]</a> to find the point of maximum curvature and split the spline at that point into two splines. We then move this cut point in the opposite direction of the normal at that point to decrease the radius of curvature at that point.
         </p>
@@ -111,9 +114,18 @@
       <section>
         <h1>Phase 2 - Control</h1>
         <h2>Step 1: Speed Profiling</h2>
-        <p>Given an intrinsic curve derived in the previous section, we aim to generate control commands which satisfy the dynamic feasibility and given constraints. We take first and second derivatives from the planned path, and get velocity and acceleration.</p>
+        <p>Given an intrinsic curve $c(s)$ derived in the previous section, we aim to generate control commands which satisfy the dynamic feasibility and given constraints. We take first and second derivatives from the planned path, and get velocity and acceleration.</p>
+        <img style="width: 100%; height: 400px; object-fit: contain;" src="/img/car_diag.png" alt="car turning acceleration model">
+        <p>
+          We simplify the car model to the chassis and compute the largest centripetal acceleration based on the height and width of the chassis. Based on the relationship between centripetal acceleration, radius and velocity,
+        </p>
+        $$ v(s) \leq \sqrt{\dfrac{g.w.R(s)}{l}} $$
+        $$ R(s) = \dfrac{1}{k(s)} = \dfrac{1}{\sqrt{x''(s)^2 + y''(s)^2}} $$
+        $$ v(s) \leq \sqrt{ \dfrac{g.w}{l.\sqrt{x''(s)^2 + y''(s)^2}} } $$
+        <p>
+          As we can calculate the radius at any given $s$, we can have the maximum velocity at any given $s$ on the trajectory.
+        </p>
         <h2>Step 2: Convert trajectory to control commands</h2>
-        <h2>Step 3: Convert trajectory to control commands</h2>
       </section>
       <section>
         <h1>Discussion</h1>
