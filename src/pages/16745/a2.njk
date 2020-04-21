@@ -110,38 +110,53 @@
         <p>
           Step 4: For each curve, repeat the step 2~3 until the maximum curvature is within the range. In this way, by moving these points outside the curvature, we create a longer trajectory which decreases the curvature since the amount of turning is spreaded along the curve.
         </p>
+        <p>We reparamerized the spline with curve length $s$, thus getting $s$-$x$ profile $x(s)$ and $s$-$v$ profile $v(s)$.</p>
       </section>
       <section>
         <h1>Phase 2 - Control</h1>
         <h2>Step 1: Speed Profiling</h2>
         <img style="width: 100%; height: 400px; object-fit: contain;" src="/img/car_diag.png" alt="car turning acceleration model">
-        <p>Given an intrinsic curve $c(s)$ derived in the previous section, we aim to generate control commands which satisfy the dynamic feasibility and given constraints. We take first and second derivatives from the planned path, and get velocity and acceleration.</p>
+        <p>Given an intrinsic curve $c(s)$ derived in the previous section, we aim to generate control commands which satisfy the dynamic feasibility and given constraints. We get the velocity and acceleration by taking the first and second derivatives of the planned path.</p>
         <p>
+          We compute the largest centripetal acceleration using a simplified model of the car based on the height and width of the chassis, based on the relationship between centripetal acceleration, radius and velocity &#8212;
         $$ v(s) \leq \sqrt{\dfrac{g.w.R(s)}{l}} $$
         $$ R(s) = \dfrac{1}{k(s)} = \dfrac{1}{\sqrt{x''(s)^2 + y''(s)^2}} $$
         $$ v(s) \leq \sqrt{ \dfrac{g.w}{l.\sqrt{x''(s)^2 + y''(s)^2}} } $$
-          We simplify the car model to the chassis and compute the largest centripetal acceleration based on the height and width of the chassis. Based on the relationship between centripetal acceleration, radius and velocity,
         </p>
         <p>
-        As we can calculate the radius at any given $s$, we can have the maximum velocity at any given $s$ on the trajectory. We will have $s \implies curvature$, then get $s \implies V_{max}$. We integrate the velocity from $t = 0$, $v = V_0$, thus getting the mapping $t \implies s$.
+        We can calculate the radius of curvature at any given $s$. As a result, we can also compute the maximum velocity at that $s$ on the trajectory. We will have $s \implies curvature (R)$, then get $s, R \implies V_{max}$. We integrate the velocity from $t = 0$, $v = V_0$, thus getting the mapping $t \implies s$.
         </p>
         <img style="width: 100%; height: 400px; object-fit: contain;" src="/img/velocity.png" alt="">
-        <p>Thus we have an $s$ - $V_{max}$ profile(fig xx). For example, for a given trajectory in fig xx (a), we will have the s - Vmax profile as fig xx (b). The goal for speed profiling is to get a trajectory in s - V profile(blue trajectory in fig xx (b)) that meets the following constraints:</p>
+        <p>Thus we have an $s$ - $V_{max}$ profile shown above. For example, for a given trajectory in fig (a), we will have the $s$ - $V_{max}$ profile as fig (b). The goal for speed profiling is to get a trajectory in $s$ - $V$ profile (blue trajectory in fig (b)) that meets the following constraints:</p>
         <ol>
-          <li>velocity constraint 1, for any s, $v(s) \leq V_{max}(s)$</li>
-          <li>the beginning velocity equals to the current velocity v(0), and the velocity at the next waypoint (we set a small value v_way = 1)</li>
-          <li>$a(s) \leq a_{max}$, specifically, in s-Vmax profile, $a = \frac{dv}{ds} * v \leq a_{max}$.</li>
+          <li>Velocity constraint: For any $s$, $v(s) \leq V_{max}(s)$</li>
+          <li>Initial velocity $V_0$ equals to current velocity, as well as the velocity at the next waypoint (we set this to a small value $v_{way} = 1$)</li>
+          <li>$a(s) \leq a_{max}$, specifically, in $s$-$V_{max}$ profile, $a = \frac{dv}{ds} . v \leq a_{max}$.</li>
         </ol>
         <p>The goal for the optimization is to maximize the accumulated velocity, $$\int_{s_0}^{s_{end}} v(s).ds$$</p>
+        <p>We compute $s$-$t$ profile with $$t(s) = \int_{s_0}^{S}\dfrac{dS}{v(s)}$$ We get $t$-$s$ profile $s(t)$ by fitting the data from $t(s)$.</p>
+        <p>By connecting $s$-$v$ profile and $t$-$s$ profile we get $v(t) = V(s(t))$</p>
+        <p>By connecting the $s$-$x$ and $s$-$y$ profile we get from part 1 with $t$-$s$ profile, we get $x(t)$ and $y(t)$
         <h2>Step 2: Convert trajectory to control commands</h2>
-        $$ \dfrac{dx}{dt} = v cos(\theta) $$
-        $$ \dfrac{dy}{dt} = v sin(\theta) $$
-        $$ \dfrac{d\theta}{dt} = \dfrac{v}{L} tan(\phi) $$
-        $$ \dfrac{dv}{dt} = a_v $$
+        <p>After getting $v(t)$, we are able to compute the velocity $v$ and steering angle $\phi$ at any time $t$ with the following equations:</p>
+        $$ v(t) = \sqrt{x'(t)^2 + y'(t)^2} $$
+        $$ \theta(t) = \dfrac{y'(t)}{x'(t)} $$
+        $$ \phi(t) = \tan^{-1} \left( \dfrac{L}{v(t)}.\theta'(t) \right) $$
+        <p>We constantly check the deviation of the car from the predicted position and dynamically replan the trajectory once</p>
+        <ol>
+          <li>the deviation is larger than a threshold,</li>
+          <li>the car reaches the goal area within the goal yaw angle range, or</li>
+          <li>time $t$ exceeds the planned ending time.</li>
+        </ol>
+      </section>
+      <section>
+        <h1>Result</h1>
+        <p>Average time</p>
+        <p>Computing time for each optimization</p>
       </section>
       <section>
         <h1>Discussion</h1>
-        <p>Global optimization</p>
+        <p>Instead of computing the trajectory between every two waypoints,  one possible improvement is to do global optimization from the first point to the last point, and take the position tolerance and yaw angle tolerance of middle waypoints as inequality constraints. In such a case, the optimizer can explore the waypoints that lead to the shortest path but still within the tolerance range.</p>
       </section>
     </main>
   </body>
