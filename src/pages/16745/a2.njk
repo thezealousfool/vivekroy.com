@@ -56,7 +56,7 @@
           So here is the problem that we are trying to solve in this phase - given a sequence of waypoint coordinates, we want the system to go through them in order. We have a tolerance on the location of the vehicle to be considered as reaching that waypoint. In addition to this, we also have a heading associated with each waypoint as well as a heading tolerance. The minimum turning radius and steering angle pose additional constraints on the path of the vehicle. We try to find the shortest path which satisfies the constraints.
         </p>
         <p>
-          In the next optimum control phase, we take the planned shortest path and find the optimum control commands for velocity and acceleration in order to traverse the path in the fastest possible way thereby minimizing time. The constraints to be considered in this phase are those of maximum acceleration, deceleration, maximum velocity and centripetal forces to avoid slipping and toppling. We did a velocity profiling to minimize the time for the car to finish the trajectory but making sure it does so without slipping. Since the control is not perfect, if the system deviates from the planned path, we replan the trajectory to bring it back on track.
+          In the next optimum control phase, we take the planned shortest path and find the optimum control commands for velocity and acceleration in order to traverse the path in the fastest possible way thereby minimizing time. The constraints to be considered in this phase are those of maximum acceleration, deceleration, maximum velocity and centripetal forces to avoid slipping and toppling. We did a velocity profiling to minimize the time for the car to finish the trajectory but making sure it does so without slipping. Since the control is not perfect, if the system deviates from the planned path, we replan the trajectory from the new point forward.
         </p>
       </section>
       <section>
@@ -66,14 +66,18 @@
         </p>
         <h2>Quintic Polynomials</h2>
         <p>
-          The first approach we tried was to fit a minimum-jerk path between the two waypoints being considered in the local planning. This way we get optimum planning and control by optimizing coefficients of one set of equations. We considered polynomial paths and analytical solutions to them in order to solve for the optimum coefficients. We considered a quintic polynomial as proposed in [1]. This method ensures that the path planned is smooth and satisfies the constraints of maximum acceleration and velocity.
+          The first approach we tried was to fit a minimum-jerk path between the two waypoints being considered in the local planning. This way we get optimum planning and control by optimizing coefficients of one set of equations. We considered polynomial paths and analytical solutions to them in order to solve for the optimum coefficients. We considered a quintic polynomial as proposed in <a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=637936" target="blank">[1]</a>. This method ensures that the path planned is smooth and satisfies the constraints of maximum acceleration and velocity.
         </p>
         <p>
           One drawback of this method that we noticed was that it does not consider the radius of curvature constraints and as a result ends up violating the maximum centrifugal force limit and leads to the unrecoverable toppling of the vehicle. Sometimes the vehicle slowly orbits around the waypoint for several rounds before it is able to meet the heading constraints of the waypoint. Our understanding of this is that it has got to do with the maximum allowed steering angle by the physics engine used.
         </p>
+        <video controls>
+          <source src="/quintic.mp4" type="video/mp4">
+          Your browser does not support video playback
+        </video>
         <h2>Piecewise Intrinsic Spline</h2>
         <p>
-        We choose the piecewise intrinsic spline method proposed in [2] as the second approach. In the second approach, we formalize the problem into finding the shortest spline that abides by the constraints. Specifically, the spline should meet the following requirements:
+        We choose the piecewise intrinsic spline method proposed in <a href="https://www.ri.cmu.edu/pub_files/pub3/delingette_h_1991_1/delingette_h_1991_1.pdf" target="blank">[2]</a> as the second approach. In the second approach, we formalize the problem into finding the shortest spline that abides by the constraints. Specifically, the spline should meet the following requirements:
         </p>
         <ol>
           <li>The spline should be at least twice differentiable.</li>
@@ -86,7 +90,7 @@
           In order to find the shortest path meeting the above mentioned requirements, we begin with one piece of Cubic Bezier Curve with optimized control points. In order to do that, we start with setting the control points to be in the direction of the heading in the two ends of the path and then optimize the length of the control vectors. We formulate this optimization as the minimization of the maximum radius of curvature of the spline.
         </p>
         <p>
-          Once we have the optimal control points, we check if at any point in the spline, the radius of curvature does not meet the hard constraint given in the problem statement. If so, we use the method proposed in [2] to find the point of maximum curvature and split the spline at that point into two splines. We then move this cut point in the opposite direction of the normal at that point to decrease the radius of curvature at that point.
+          Once we have the optimal control points, we check if at any point in the spline, the radius of curvature does not meet the hard constraint given in the problem statement. If so, we use the method proposed in <a href="https://www.ri.cmu.edu/pub_files/pub3/delingette_h_1991_1/delingette_h_1991_1.pdf" target="blank">[2]</a> to find the point of maximum curvature and split the spline at that point into two splines. We then move this cut point in the opposite direction of the normal at that point to decrease the radius of curvature at that point.
         </p>
         <p>
           We do this step iteratively until the hard constraint on curvature is met. Formally, we follow the steps as &#8212;
@@ -106,8 +110,14 @@
       </section>
       <section>
         <h1>Phase 2 - Control</h1>
-        <h2>Speed Profiling</h2>
+        <h2>Step 1: Speed Profiling</h2>
         <p>Given an intrinsic curve derived in the previous section, we aim to generate control commands which satisfy the dynamic feasibility and given constraints. We take first and second derivatives from the planned path, and get velocity and acceleration.</p>
+        <h2>Step 2: Convert trajectory to control commands</h2>
+        <h2>Step 3: Convert trajectory to control commands</h2>
+      </section>
+      <section>
+        <h1>Discussion</h1>
+        <p>Global optimization</p>
       </section>
     </main>
   </body>
