@@ -1,0 +1,18 @@
+add_newline = false
+prompt_order = [
+    "username",
+    "directory",
+    "git_branch",
+    "git_state",
+    "memory_usage",
+    "env_var",
+    "crystal",
+    "cmd_duration",
+    "custom",
+    "battery",
+    "time",
+    "character",
+]
+
+[package]
+disabled = true
