@@ -17,25 +17,25 @@
   "author": "Vivek Roy",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.1.6",
-    "@babel/preset-env": "^7.1.6",
-    "del": "^3.0.0",
-    "gulp": "^4.0.0",
-    "gulp-autoprefixer": "^6.0.0",
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "del": "^6.1.1",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-babel": "^8.0.0",
-    "gulp-clean-css": "^4.0.0",
-    "gulp-cli": "^2.0.1",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-cli": "^2.3.0",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-nunjucks-render": "^2.2.2",
+    "gulp-nunjucks-render": "^2.2.3",
     "gulp-prism": "^1.2.0",
-    "gulp-sass": "^4.0.2",
-    "gulp-uglify": "^3.0.1",
+    "gulp-sass": "^5.1.0",
+    "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.8",
     "gulp-watch": "^5.0.1",
-    "live-server": "^1.2.1",
-    "node-sass": "^4.11.0"
+    "live-server": "^1.2.2",
+    "node-sass": "^7.0.1"
   },
   "dependencies": {
-    "wicked-elements": "^0.4.3"
+    "wicked-elements": "^3.1.2"
   }
 }
