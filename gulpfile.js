@@ -10,7 +10,7 @@ const watch = require('gulp-watch');
 const njkRender = require('gulp-nunjucks-render');
 const sass = require('gulp-sass')(require('node-sass'));
 const highlight = require('gulp-prism');
-const mode = require('gulp-mode');
+const mode = require('gulp-mode')();
 
 sass.compiler = require('node-sass');
 
