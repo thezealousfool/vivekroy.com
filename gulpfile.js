@@ -9,11 +9,10 @@ const del = require('del');
 const watch = require('gulp-watch');
 const njkRender = require('gulp-nunjucks-render');
 const sass = require('gulp-sass')(require('node-sass'));
-const util = require('gulp-util');
 const highlight = require('gulp-prism');
+const mode = require('gulp-mode');
 
 sass.compiler = require('node-sass');
-const PRODUCTION = !!util.env.production;
 
 gulp.task('css', function() {
   return gulp.src(path.join('src', 'css', '*.scss'))
@@ -26,7 +25,7 @@ gulp.task('css', function() {
 gulp.task('js', function() {
   return gulp.src(path.join('src', 'js', '*.js'))
     .pipe(babel({ presets: [['@babel/env', { modules: false }]] }))
-    .pipe(PRODUCTION ? uglify({
+    .pipe(mode.production(uglify({
       toplevel: true,
       compress: {
         drop_console: false,
@@ -37,7 +36,7 @@ gulp.task('js', function() {
         toplevel: true,
       },
       sourceMap: false,
-    }) : util.noop())
+    })))
     .pipe(gulp.dest(path.join('dist', 'js')));
 });
 
